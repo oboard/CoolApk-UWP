@@ -1,0 +1,85 @@
+﻿<Page
+    x:Class="酷安_UWP.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    Loaded="Page_Loaded"
+    mc:Ignorable="d">
+
+    <Grid x:Name="GridRootLayout" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition x:Name="cd2" Width="auto"/>
+        </Grid.ColumnDefinitions>
+
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup>
+                <VisualState >
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="769" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="cd2.Width" Value="*"></Setter>
+                    </VisualState.Setters>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
+
+        <Grid>
+
+            <Grid Height="60" VerticalAlignment="Bottom" Grid.ColumnSpan="2">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <AppBarButton Background = "White" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Icon = "Home" Label = "主页" Width="Auto" />
+                <AppBarButton Background = "White" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Icon = "View" Label = "发现" Width="Auto" Grid.Column="1" />
+                <AppBarButton Background = "White" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Icon = "Comment" Label = "圈子" Width="Auto" Grid.Column="2" />
+                <AppBarButton Background = "White" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Icon = "Contact" Label = "我" Width="Auto" Grid.Column="3" />
+
+            </Grid>
+
+
+            <Grid Height="40" VerticalAlignment="Top" Margin="0,50,0,0">
+                <Grid.Background>
+                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                        <GradientStop Color="#4CAF50" Offset="0"/>
+                        <GradientStop Color="#4CAF50" Offset="0.940"/>
+                        <GradientStop Color="#50000000" Offset="0.950"/>
+                        <GradientStop Offset="1"/>
+                    </LinearGradientBrush>
+                </Grid.Background>
+            </Grid>
+            <Pivot x:Name="Pivot1" Margin="0,51,0,60">
+                <PivotItem Header="头条" Margin="0,10,0,0"/>
+                <PivotItem Header="游戏">
+                    <Grid/>
+                </PivotItem>
+            </Pivot>
+
+            <Grid Height="51" VerticalAlignment="Top" Background="#4CAF50">
+                <Grid Margin="5" Background="#20FFFFFF" CornerRadius="5" Height="50" VerticalAlignment="Top">
+                    <AppBarButton HorizontalAlignment="Right" VerticalAlignment="Stretch" Width="48" Icon="Find" Foreground="White" />
+                    <TextBox Padding="10,15,0,0" TextWrapping="Wrap" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="White" SelectionHighlightColor="#CC969696" TextAlignment="Left" Margin="0,0,56,0" />
+                </Grid>
+            </Grid>
+        </Grid>
+
+        <Grid Grid.Column="1">
+            <Grid Height="50" VerticalAlignment="Top" Grid.ColumnSpan="2">
+                <Grid.Background>
+                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                        <GradientStop Color="#4CAF50" Offset="0"/>
+                        <GradientStop Color="#4CAF50" Offset="0.940"/>
+                        <GradientStop Color="#50000000" Offset="0.950"/>
+                        <GradientStop Offset="1"/>
+                    </LinearGradientBrush>
+                </Grid.Background>
+            </Grid>
+        </Grid>
+
+    </Grid>
+</Page>
