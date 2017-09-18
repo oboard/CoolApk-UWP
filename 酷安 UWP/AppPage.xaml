@@ -1,0 +1,102 @@
+﻿<Page
+    x:Class="酷安_UWP.AppPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:酷安_UWP"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    Loaded="Page_Loaded"
+    mc:Ignorable="d" >
+
+    <Grid Background="White">
+        <Grid Height="150" VerticalAlignment="Top" Background="#4CAF50">
+            <Button Click="BackButton_Click" HorizontalAlignment="Left" VerticalAlignment="Top" Width="50" Background="#00000000" Foreground="White" Height="50">
+                <SymbolIcon Symbol="Back" Foreground="White"/>
+            </Button>
+            <Button HorizontalAlignment="Right" VerticalAlignment="Top" Width="50" Background="#00000000" Foreground="White" Height="50">
+                <SymbolIcon Symbol="More" Foreground="White" RenderTransformOrigin="0.5,0.5">
+                    <SymbolIcon.RenderTransform>
+                        <CompositeTransform Rotation="90"/>
+                    </SymbolIcon.RenderTransform>
+                </SymbolIcon>
+                <Button.Flyout>
+                    <MenuFlyout>
+                        <MenuFlyoutItem Text="访问网页" Click="gotoUri_Click"/>
+                        <MenuFlyoutSubItem Text="复制">
+                            <MenuFlyoutItem Text="简介" Click="copyM_Click" Tag="0"/>
+                            <MenuFlyoutItem Text="点评" Click="copyM_Click" Tag="1"/>
+                            <MenuFlyoutItem Text="包名" Click="copyM_Click" Tag="2"/>
+                            <MenuFlyoutItem Text="版本号" Click="copyM_Click" Tag="3"/>
+                            <MenuFlyoutItem Text="更新日记" Click="copyM_Click" Tag="4"/>
+                        </MenuFlyoutSubItem>
+                    </MenuFlyout>
+                </Button.Flyout>
+            </Button>
+            <Grid Height="auto" Margin="0,50,0,0" >
+                <Image x:Name="AppIconImage" x:FieldModifier="Public" HorizontalAlignment="Left" Height="60" Margin="20" VerticalAlignment="Top" Width="60" />
+                <StackPanel Margin="100,10,0,0">
+                    <TextBlock x:Name="AppTitleText" x:FieldModifier="Public" Foreground="White" FontSize="20" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Text="应用名" Padding="0,0,0,5"/>
+                    <TextBlock x:Name="AppVText" x:FieldModifier="Public" Text="版本号" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Foreground="#AAFFFFFF" Padding="0,0,0,5"/>
+                    <TextBlock x:Name="AppMText" x:FieldModifier="Public" Text="应用信息1" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Foreground="#AAFFFFFF"/>
+                </StackPanel>
+            </Grid>
+        </Grid>
+        <ScrollViewer Margin="0,150,0,0" VerticalScrollBarVisibility="Hidden" Background="#FFF0F0F0">
+            <StackPanel>
+                <Grid Background="White" Padding="10">
+                    <TextBlock x:Name="AppXText" x:FieldModifier="Public" Text="应用信息2" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Center" Foreground="#AA000000"/>
+                    <Button Content="下载" HorizontalAlignment="Right" VerticalAlignment="Top" Width="78" Background="#FF4CAF50" Foreground="White" />
+                </Grid>
+                <StackPanel x:Name="DPanel" Background="White" Padding="10" Visibility="Collapsed">
+                    <Rectangle Height="1" Fill="#FFF0F0F0" />
+                    <TextBlock x:Name="AppDText" x:FieldModifier="Public" Text="点评" VerticalAlignment="Top" TextAlignment="Center" Foreground="Black" />
+                </StackPanel>
+
+                <Button x:Name="UPanel" Background="#504CAF50" Height="auto" HorizontalContentAlignment="Stretch" HorizontalAlignment="Stretch">
+                    <StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock x:Name="AppV2Text" x:FieldModifier="Public" Text="最新版本" Margin="10" TextWrapping="Wrap" VerticalAlignment="Top" Foreground="Black" />
+                            <TextBlock x:Name="AppVTText" x:FieldModifier="Public" Text="更新时间" Margin="10" TextWrapping="Wrap" VerticalAlignment="Top" Foreground="#99000000" />
+                        </StackPanel>
+                        <TextBlock x:Name="AppVMText" x:FieldModifier="Public" Text="更新日记" Margin="10" TextWrapping="Wrap" VerticalAlignment="Top" />
+                    </StackPanel>
+                </Button>
+                <ListBox x:Name="ScreenShotView" Height="150" SelectionChanged="ScreenShotView_SelectionChanged" Background="White" ScrollViewer.VerticalScrollBarVisibility="Disabled" ScrollViewer.HorizontalScrollBarVisibility="Auto">
+                    <ListBox.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <VirtualizingStackPanel Orientation="Horizontal"/>
+                        </ItemsPanelTemplate>
+                    </ListBox.ItemsPanel>
+                </ListBox>
+
+                <Grid Height="auto" Padding="10" Background="White">
+                    <TextBlock x:Name="AppJText" x:FieldModifier="Public" Text="简介" TextWrapping="Wrap" VerticalAlignment="Top" />
+                </Grid>
+
+                <!--<p class="rank_num">-->
+                <Grid Height="auto" Padding="10" Background="White" Margin="0,10">
+                    <TextBlock x:Name="AppRText" x:FieldModifier="Public" Text="4.5" />
+                    <StackPanel Orientation="Horizontal" Margin="40,0" VerticalAlignment="Top" HorizontalAlignment="Left">
+                        <SymbolIcon x:Name="star1" Symbol="Favorite" Foreground="#FF4CAF50"/>
+                        <SymbolIcon x:Name="star2" Symbol="Favorite" Foreground="#FFCCDB38"/>
+                        <SymbolIcon x:Name="star3" Symbol="Favorite" Foreground="#FFFFEA39"/>
+                        <SymbolIcon x:Name="star4" Symbol="Favorite" Foreground="#FFFFB234"/>
+                        <SymbolIcon x:Name="star5" Symbol="Favorite" Foreground="#FFFF8B5A"/>
+                    </StackPanel>
+                    <TextBlock x:Name="AppPText" x:FieldModifier="Public" Text="共0人评分" Margin="0,30,0,0" />
+                </Grid>
+
+                <Grid x:Name="KPanel" Padding="10" Background="White">
+                    <Image x:Name="AppKImage" x:FieldModifier="Public" HorizontalAlignment="Left" Height="60" Margin="5" VerticalAlignment="Top" Width="60" />
+                    <TextBlock x:Name="AppKNText" x:FieldModifier="Public" Text="开发者名称" Margin="70,0,0,0" FontSize="20" VerticalAlignment="Center" HorizontalAlignment="Left"/>
+                </Grid>
+
+            </StackPanel>
+        </ScrollViewer>
+
+        <FlipView Visibility="Collapsed" x:Name="ScreenShotFlipView" />
+        <Button x:Name="CloseFlip" Visibility="Collapsed" Click="CloseFlip_Click"  HorizontalAlignment="Left" VerticalAlignment="Top" Width="50" Foreground="White" Height="50">
+            <SymbolIcon Symbol="Cancel" Foreground="White"/>
+        </Button>
+    </Grid>
+</Page>
