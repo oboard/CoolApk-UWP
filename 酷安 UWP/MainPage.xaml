@@ -65,8 +65,8 @@
 
                 <Grid Grid.RowSpan="2" Background="#FFF0F0F0">
 
-                    <Grid Height="100" VerticalAlignment="Top" Background="#4CAF50">
-                        <Grid Margin="5,5,5,0" Background="#20FFFFFF" CornerRadius="5" Height="45" VerticalAlignment="Top">
+                    <Grid Height="105" VerticalAlignment="Top" Background="{ThemeResource CoolApk_Theme}">
+                        <Grid Margin="10" Background="#20FFFFFF" CornerRadius="5" Height="45" VerticalAlignment="Top">
                             <Button x:Name="SearchBack" Visibility="Collapsed" Click="App_Back" HorizontalAlignment="Left" VerticalAlignment="Stretch" Width="45" Background="#00000000">
                                 <SymbolIcon Foreground="White" Symbol="Back"/>
                             </Button>
@@ -79,14 +79,14 @@
 
                     <Grid x:Name="P1">
 
-                        <Pivot x:Name="Pivot1" Margin="0,52,0,0" >
+                        <Pivot x:Name="Pivot1" Margin="0,57,0,0" >
                             <PivotItem Header="应用" Margin="0">
                                 <Grid>
                                     <ScrollViewer>
                                         <StackPanel>
                                             <Grid Background="White">
                                                 <TextBlock Text="最近更新" Height="auto" VerticalAlignment="Top" Margin="10,10,0,0" />
-                                                <GridView x:Name="updateview" Margin="0,35,0,10" Padding="10" SelectionChanged="updateview_SelectionChanged" RequestedTheme="Light"/>
+                                                <GridView x:Name="updateview" Margin="0,35,0,10" Padding="10" SelectionChanged="Updateview_SelectionChanged" HorizontalAlignment="Center"/>
                                             </Grid>
                                             <Grid Height="80"  Background="White" Margin="0,5">
                                                 <Grid.ColumnDefinitions>
@@ -108,11 +108,11 @@
                                             </Grid>
                                             <Grid Height="auto" Background="White">
                                                 <TextBlock Text="热门应用" Height="auto" VerticalAlignment="Top" Margin="10,10,0,0" />
-                                                <GridView x:Name="hotview" Margin="0,35,0,10" Padding="10" SelectionChanged="updateview_SelectionChanged"/>
+                                                <GridView x:Name="hotview" Margin="0,35,0,10" Padding="10" SelectionChanged="Updateview_SelectionChanged" HorizontalAlignment="Center"/>
                                             </Grid>
                                             <Grid Height="auto" Background="White" Margin="0,5">
                                                 <TextBlock Text="开发者应用" Height="auto" VerticalAlignment="Top" Margin="10,10,0,0" />
-                                                <GridView x:Name="developerview" Margin="0,35,0,10" Padding="10" SelectionChanged="updateview_SelectionChanged"/>
+                                                <GridView x:Name="developerview" Margin="0,35,0,10" Padding="10" SelectionChanged="Updateview_SelectionChanged" HorizontalAlignment="Center"/>
                                             </Grid>
                                         </StackPanel>
                                     </ScrollViewer>
@@ -123,11 +123,11 @@
                                     <StackPanel>
                                         <Grid Background="White" VerticalAlignment="Top">
                                             <TextBlock Text="推荐把玩"  VerticalAlignment="Top" Margin="10" HorizontalAlignment="Left" Foreground="Black" />
-                                            <GridView x:Name="hotgview" Margin="0,35,0,10" Padding="10" SelectionChanged="updateview_SelectionChanged"/>
+                                            <GridView x:Name="hotgview" Margin="0,35,0,10" Padding="10" SelectionChanged="Updateview_SelectionChanged" HorizontalAlignment="Center"/>
                                         </Grid>
                                         <Grid Background="White" VerticalAlignment="Top" Margin="0,10">
                                             <TextBlock Text="全部游戏"  VerticalAlignment="Top" Margin="10" HorizontalAlignment="Left" Foreground="Black" />
-                                            <ListBox x:Name="gamelist" Margin="0,35,0,10" Padding="10" SelectionChanged="gamelist_SelectionChanged"  Background="#00000000">
+                                            <ListBox x:Name="gamelist" Margin="0,35,0,10" Padding="10" SelectionChanged="Gamelist_SelectionChanged"  Background="#00000000">
 
                                             </ListBox>
                                         </Grid>
@@ -349,17 +349,17 @@
                         </Pivot>
                     </Grid>
 
-                    <Rectangle Height="5" Margin="0,100,0,0" VerticalAlignment="Top">
+                    <Rectangle Height="5" Margin="0,105,0,0" VerticalAlignment="Top">
                         <Rectangle.Fill>
                             <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                                <GradientStop Color="#33000000" Offset="0"/>
+                                <GradientStop Color="#11000000" Offset="0"/>
                                 <GradientStop Offset="1"/>
                             </LinearGradientBrush>
                         </Rectangle.Fill>
                     </Rectangle>
 
                     <Grid x:Name="P3" Margin="0,50,0,0" Visibility="Collapsed">
-                        <Grid Height="100" VerticalAlignment="Top" Background="#4CAF50">
+                        <Grid Height="100" VerticalAlignment="Top" Background="{ThemeResource CoolApk_Theme}">
                             <SymbolIcon Margin="10" HorizontalAlignment="Left" Width="80" Foreground="#FFF0F0F0" Symbol="Contact" />
                             <Image x:Name="User_Face" Margin="10" HorizontalAlignment="Left" Width="80" />
                             <TextBlock x:Name="User_Name" Text="请登录" FontSize="20" Foreground="White" Margin="100,0" HorizontalAlignment="Left" VerticalAlignment="Center" />
@@ -377,10 +377,10 @@
 
             </Grid>
 
-            <Rectangle x:Name="BottomBarShadow" Height="5" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="432">
+            <Rectangle x:Name="BottomBarShadow" Height="5" VerticalAlignment="Bottom" >
                 <Rectangle.Fill>
                     <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                        <GradientStop Color="#33000000" Offset="1"/>
+                        <GradientStop Color="#11000000" Offset="1"/>
                         <GradientStop/>
                     </LinearGradientBrush>
                 </Rectangle.Fill>
@@ -396,19 +396,19 @@
                 <AppBarButton x:Name="BottomBar3" Click="Bar_Click" Tag="3" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Icon = "Contact" Label = "我" Grid.Column="2" Width="Auto" Foreground="Black"/>
             </Grid>
             <!--
-            <Border Height="70" Width="70" VerticalAlignment="Bottom" Background="#FF4CAF50" BorderBrush="White" CornerRadius="100" BorderThickness="5" Grid.RowSpan="2">
+            <Border Height="70" Width="70" VerticalAlignment="Bottom" Background="{ThemeResource CoolApk_Theme}" BorderBrush="White" CornerRadius="100" BorderThickness="5" Grid.RowSpan="2">
                 <SymbolIcon Symbol="Add" Foreground="White"/>
             </Border>
             -->
         </Grid>
 
-        <Frame x:Name="ViewFrameS" Grid.Column="1" Margin="0,55,0,0" x:FieldModifier="Public" Visibility="Collapsed" />
+        <Frame x:Name="ViewFrameS" Grid.Column="1" Margin="0,60,0,0" x:FieldModifier="Public" Visibility="Collapsed" />
 
         <Rectangle x:Name="ViewFrameShadow" Grid.Column="1" HorizontalAlignment="Right" Width="5" Visibility="Collapsed">
             <Rectangle.Fill>
                 <LinearGradientBrush EndPoint="1,0.5" StartPoint="0,0.5">
-                    <GradientStop Color="#4C4CAF50" Offset="1"/>
-                    <GradientStop Color="#004CAF50"/>
+                    <GradientStop Color="{ThemeResource CoolApk_Begin}" Offset="1"/>
+                    <GradientStop Color="{ThemeResource CoolApk_End}"/>
                 </LinearGradientBrush>
             </Rectangle.Fill>
         </Rectangle>

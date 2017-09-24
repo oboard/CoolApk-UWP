@@ -47,33 +47,40 @@ namespace 酷安_UWP
 
         private async void WebView_NavigationCompleted(WebView sender, WebViewNavigationCompletedEventArgs args)
         {
-            string html = "";
-            html = await sender.InvokeScriptAsync("eval", new String[] { "document.getElementsByTagName('html')[0].innerHTML" });
-            if (html.Contains("ex-drawer__header-username"))
+            try
             {
-                UserName = Regex.Split(Regex.Split(html, @"<span class=""ex-drawer__header-username"">")[1], @"<")[0];
-                UserFace = Regex.Split(Regex.Split(html, @"<img class=""ex-drawer__header-avatar"" src=""")[1], @""">")[0];
-            }
-            if (!sender.Source.ToString().Contains("account.coolapk"))
-            {
-                MainPage.App_Back();
-                MainPage.User_Load();
-            }
-            if (html.Contains("欢迎来到酷安开发者"))
-            {
-                sender.Navigate(new Uri("https://developer.coolapk.com/do?c=apk&m=myList&listType=publish"));
+                string html = "";
+                html = await sender.InvokeScriptAsync("eval", new String[] { "document.getElementsByTagName('html')[0].innerHTML" });
+                if (html.Contains("ex-drawer__header-username"))
+                {
+                    UserName = Regex.Split(Regex.Split(html, @"<span class=""ex-drawer__header-username"">")[1], @"<")[0];
+                    UserFace = Regex.Split(Regex.Split(html, @"<img class=""ex-drawer__header-avatar"" src=""")[1], @""">")[0];
+                }
+                if (!sender.Source.ToString().Contains("account.coolapk"))
+                {
+                    MainPage.App_Back();
+                    MainPage.User_Load();
+                }
+                if (html.Contains("欢迎来到酷安开发者"))
+                {
+                    sender.Navigate(new Uri("https://developer.coolapk.com/do?c=apk&m=myList&listType=publish"));
 
-                //<span class="ex-drawer__header-username">一块小板子</span>
-                //<img class="ex-drawer__header-avatar" src="http://avatar.coolapk.com/data/000/69/59/42_avatar_middle.jpg?1477565948">
+                    //<span class="ex-drawer__header-username">一块小板子</span>
+                    //<img class="ex-drawer__header-avatar" src="http://avatar.coolapk.com/data/000/69/59/42_avatar_middle.jpg?1477565948">
+                }
+                else if (sender.Source.ToString().Contains("listType=publish"))
+                {
+                    source1 = html;
+                    sender.Navigate(new Uri("https://developer.coolapk.com/do?c=apk&m=myList&listType=trash"));
+                }
+                else if (sender.Source.ToString().Contains("listType=trash"))
+                {
+                    source2 = html;
+                }
             }
-            else if (sender.Source.ToString().Contains("listType=publish"))
+            catch (Exception e)
             {
-                source1 = html;
-                sender.Navigate(new Uri("https://developer.coolapk.com/do?c=apk&m=myList&listType=trash"));
-            }
-            else if (sender.Source.ToString().Contains("listType=trash"))
-            {
-                source2 = html;
+
             }
         }
 

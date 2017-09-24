@@ -42,7 +42,7 @@ namespace 酷安_UWP
         TextBlock[] hotAppText;
         TextBlock[] hotAppName;
 
-        int itemw = 100, itemh = 90;
+        int itemw = 110, itemh = 90;
         
         public static Frame _ViewFrame, _ViewFrameS;
         public static TextBlock _User_Name;
@@ -134,12 +134,12 @@ namespace 酷安_UWP
                 localSettings.Values["login"] = "0";
             }
             //网络信息
-            await LoadNewUpdate(await WebMessage.getMessage("https://www.coolapk.com/"));
-            await LoadCatchLove(await WebMessage.getMessage("https://www.coolapk.com/apk?p=2"));
-            await LoadHotApp(await WebMessage.getMessage("https://www.coolapk.com/apk/recommend"));
-            await LoadDeveloperApp(await WebMessage.getMessage("https://www.coolapk.com/apk/developer"));
-            await LoadHotGame(await WebMessage.getMessage("https://www.coolapk.com/game/"));
-            await LoadHotGame(await WebMessage.getMessage("https://www.coolapk.com/game?p=2"));
+            await LoadNewUpdate(await WebMessage.GetMessage("https://www.coolapk.com/"));
+            await LoadCatchLove(await WebMessage.GetMessage("https://www.coolapk.com/apk?p=2"));
+            await LoadHotApp(await WebMessage.GetMessage("https://www.coolapk.com/apk/recommend"));
+            await LoadDeveloperApp(await WebMessage.GetMessage("https://www.coolapk.com/apk/developer"));
+            await LoadHotGame(await WebMessage.GetMessage("https://www.coolapk.com/game/"));
+            await LoadHotGame(await WebMessage.GetMessage("https://www.coolapk.com/game?p=2"));
         }
 
         private void App_BackRequested(object sender, BackRequestedEventArgs e)
@@ -345,11 +345,11 @@ namespace 酷安_UWP
                     hotAppName[i] = new TextBlock();
                     {
                         hotAppName[i].Height = 20;
-                        hotAppName[i].FontSize = 8;
+                        hotAppName[i].FontSize = 10;
                         hotAppName[i].TextAlignment = TextAlignment.Center;
                         hotAppName[i].VerticalAlignment = VerticalAlignment.Bottom;
                         hotAppName[i].Foreground = new SolidColorBrush(Colors.Black);
-                        hotAppName[i].Text = bodys[i * 15 + 5 + 9].Split('>')[1].Split('<')[0];
+                        hotAppName[i].Text = bodys[i * 15 + 5 + 7].Split('>')[1].Split('<')[0].Split(' ')[0];
                     }
                     hotApp[i].Children.Add(hotAppImage[i]);
                     hotApp[i].Children.Add(hotAppText[i]);
@@ -597,7 +597,7 @@ namespace 酷安_UWP
         
 
 
-        private void updateview_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void Updateview_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             int si = -1;
             si = ((GridView)sender).SelectedIndex;
@@ -605,7 +605,7 @@ namespace 酷安_UWP
             ((GridView)sender).SelectedIndex = -1;
         }
 
-        private void gamelist_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void Gamelist_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             int si = -1;
             si = ((ListBox)sender).SelectedIndex;

@@ -24,7 +24,7 @@ namespace 酷安_UWP
             this.Tag = MainPage.searchlink;
             try
             {
-                SearchLoad(await WebMessage.getMessage(Tag.ToString()));
+                SearchLoad(await WebMessage.GetMessage(Tag.ToString()));
             }
             catch(Exception ex)
             {
@@ -111,7 +111,9 @@ namespace 酷安_UWP
 
         private void SearchList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            if (SearchList.SelectedIndex == -1) return;
             MainPage.OpenAppPage("https://www.coolapk.com" + ((Grid)SearchList.Items[SearchList.SelectedIndex]).Tag.ToString());
+            SearchList.SelectedIndex = -1;
         }
     }
 

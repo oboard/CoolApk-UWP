@@ -9,7 +9,8 @@
     mc:Ignorable="d" >
 
     <Grid Background="White">
-        <Grid Height="150" VerticalAlignment="Top" Background="#4CAF50">
+        <Grid Height="50" VerticalAlignment="Top" Background="{StaticResource CoolApk_Theme}">
+            
             <Button Click="BackButton_Click" HorizontalAlignment="Left" VerticalAlignment="Top" Width="50" Background="#00000000" Foreground="White" Height="50">
                 <SymbolIcon Symbol="Back" Foreground="White"/>
             </Button>
@@ -21,44 +22,45 @@
                 </SymbolIcon>
                 <Button.Flyout>
                     <MenuFlyout>
-                        <MenuFlyoutItem Text="访问网页" Click="gotoUri_Click"/>
+                        <MenuFlyoutItem Text="访问网页" Click="GotoUri_Click"/>
                         <MenuFlyoutSubItem Text="复制">
-                            <MenuFlyoutItem Text="简介" Click="copyM_Click" Tag="0"/>
-                            <MenuFlyoutItem Text="点评" Click="copyM_Click" Tag="1"/>
-                            <MenuFlyoutItem Text="包名" Click="copyM_Click" Tag="2"/>
-                            <MenuFlyoutItem Text="版本号" Click="copyM_Click" Tag="3"/>
-                            <MenuFlyoutItem Text="更新日记" Click="copyM_Click" Tag="4"/>
+                            <MenuFlyoutItem Text="简介" Click="CopyM_Click" Tag="0"/>
+                            <MenuFlyoutItem Text="点评" Click="CopyM_Click" Tag="1"/>
+                            <MenuFlyoutItem Text="包名" Click="CopyM_Click" Tag="2"/>
+                            <MenuFlyoutItem Text="版本号" Click="CopyM_Click" Tag="3"/>
+                            <MenuFlyoutItem Text="更新日记" Click="CopyM_Click" Tag="4"/>
                         </MenuFlyoutSubItem>
                     </MenuFlyout>
                 </Button.Flyout>
             </Button>
-            <Grid Height="auto" Margin="0,50,0,0" >
-                <Image x:Name="AppIconImage" x:FieldModifier="Public" HorizontalAlignment="Left" Height="60" Margin="20" VerticalAlignment="Top" Width="60" />
-                <StackPanel Margin="100,10,0,0">
-                    <TextBlock x:Name="AppTitleText" x:FieldModifier="Public" Foreground="White" FontSize="20" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Text="应用名" Padding="0,0,0,5"/>
-                    <TextBlock x:Name="AppVText" x:FieldModifier="Public" Text="版本号" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Foreground="#AAFFFFFF" Padding="0,0,0,5"/>
-                    <TextBlock x:Name="AppMText" x:FieldModifier="Public" Text="应用信息1" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Foreground="#AAFFFFFF"/>
-                </StackPanel>
-            </Grid>
+            
         </Grid>
-        <ScrollViewer Margin="0,150,0,0" VerticalScrollBarVisibility="Hidden" Background="#FFF0F0F0">
+        <ScrollViewer Margin="0,49,0,0" Background="#FFF0F0F0">
             <StackPanel>
-                <Grid Background="White" Padding="10">
-                    <TextBlock x:Name="AppXText" x:FieldModifier="Public" Text="应用信息2" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Center" Foreground="#AA000000"/>
-                    <Button Content="下载" HorizontalAlignment="Right" VerticalAlignment="Top" Width="78" Background="#FF4CAF50" Foreground="White" />
+                <Grid Background="{StaticResource CoolApk_Theme}">
+                    <Image x:Name="AppIconImage" x:FieldModifier="Public" HorizontalAlignment="Left" Height="60" Margin="20" VerticalAlignment="Top" Width="60" />
+                    <StackPanel Margin="100,10,0,0">
+                        <TextBlock x:Name="AppTitleText" x:FieldModifier="Public" Foreground="White" FontSize="20" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Text="" Padding="0,0,0,5"/>
+                        <TextBlock x:Name="AppVText" x:FieldModifier="Public" Text="" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Foreground="#AAFFFFFF" Padding="0,0,0,5"/>
+                        <TextBlock x:Name="AppMText" x:FieldModifier="Public" Text="" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Foreground="#AAFFFFFF"/>
+                    </StackPanel>
                 </Grid>
-                <StackPanel x:Name="DPanel" Background="White" Padding="10" Visibility="Collapsed">
-                    <Rectangle Height="1" Fill="#FFF0F0F0" />
-                    <TextBlock x:Name="AppDText" x:FieldModifier="Public" Text="点评" VerticalAlignment="Top" TextAlignment="Center" Foreground="Black" />
-                </StackPanel>
+                <Grid Background="White" Padding="10" Height="50">
+                    <TextBlock x:Name="AppXText" x:FieldModifier="Public" Text="" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Center" Foreground="#AA000000"/>
+                    <Button Content="下载" HorizontalAlignment="Right" VerticalAlignment="Top" Width="78" Background="{StaticResource CoolApk_Theme}" Foreground="White" />
+                </Grid>
+                <Rectangle Height="1" Fill="#FFF0F0F0" />
+                <Grid Height="auto" x:Name="DPanel" Background="White" Padding="10" >
+                    <TextBlock x:Name="AppDText" x:FieldModifier="Public" TextWrapping="Wrap" Text="" TextAlignment="Center" Foreground="Black" VerticalAlignment="Top"/>
+                </Grid>
 
-                <Button x:Name="UPanel" Background="#504CAF50" Height="auto" HorizontalContentAlignment="Stretch" HorizontalAlignment="Stretch">
+                <Button x:Name="UPanel" Background="#504CAF50" HorizontalContentAlignment="Stretch" HorizontalAlignment="Stretch">
                     <StackPanel>
                         <StackPanel Orientation="Horizontal">
-                            <TextBlock x:Name="AppV2Text" x:FieldModifier="Public" Text="最新版本" Margin="10" TextWrapping="Wrap" VerticalAlignment="Top" Foreground="Black" />
-                            <TextBlock x:Name="AppVTText" x:FieldModifier="Public" Text="更新时间" Margin="10" TextWrapping="Wrap" VerticalAlignment="Top" Foreground="#99000000" />
+                            <TextBlock x:Name="AppV2Text" x:FieldModifier="Public" Text="" Margin="10" TextWrapping="Wrap" VerticalAlignment="Top" Foreground="Black" />
+                            <TextBlock x:Name="AppVTText" x:FieldModifier="Public" Text="" Margin="10" TextWrapping="Wrap" VerticalAlignment="Top" Foreground="#99000000" />
                         </StackPanel>
-                        <TextBlock x:Name="AppVMText" x:FieldModifier="Public" Text="更新日记" Margin="10" TextWrapping="Wrap" VerticalAlignment="Top" />
+                        <TextBlock x:Name="AppVMText" x:FieldModifier="Public" Text="" Margin="10" TextWrapping="Wrap" VerticalAlignment="Top" />
                     </StackPanel>
                 </Button>
                 <ListBox x:Name="ScreenShotView" Height="150" SelectionChanged="ScreenShotView_SelectionChanged" Background="White" ScrollViewer.VerticalScrollBarVisibility="Disabled" ScrollViewer.HorizontalScrollBarVisibility="Auto">
@@ -75,7 +77,7 @@
 
                 <!--<p class="rank_num">-->
                 <Grid Height="auto" Padding="10" Background="White" Margin="0,10">
-                    <TextBlock x:Name="AppRText" x:FieldModifier="Public" Text="4.5" />
+                    <TextBlock x:Name="AppRText" x:FieldModifier="Public" Text="5.0" />
                     <StackPanel Orientation="Horizontal" Margin="40,0" VerticalAlignment="Top" HorizontalAlignment="Left">
                         <SymbolIcon x:Name="star1" Symbol="Favorite" Foreground="#FF4CAF50"/>
                         <SymbolIcon x:Name="star2" Symbol="Favorite" Foreground="#FFCCDB38"/>
@@ -88,7 +90,7 @@
 
                 <Grid x:Name="KPanel" Padding="10" Background="White">
                     <Image x:Name="AppKImage" x:FieldModifier="Public" HorizontalAlignment="Left" Height="60" Margin="5" VerticalAlignment="Top" Width="60" />
-                    <TextBlock x:Name="AppKNText" x:FieldModifier="Public" Text="开发者名称" Margin="70,0,0,0" FontSize="20" VerticalAlignment="Center" HorizontalAlignment="Left"/>
+                    <TextBlock x:Name="AppKNText" x:FieldModifier="Public" Text="" Margin="70,0,0,0" FontSize="20" VerticalAlignment="Center" HorizontalAlignment="Left"/>
                 </Grid>
 
             </StackPanel>

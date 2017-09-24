@@ -12,10 +12,16 @@ namespace 酷安_UWP
 {
     class WebMessage
     {
-        public static async Task<string> getMessage(string url)
+        public static async Task<string> GetMessage(string url)
         {
-            var httpClient = new HttpClient();
-            return await httpClient.GetStringAsync(new Uri(url));
+            try
+            {
+                return await new HttpClient().GetStringAsync(new Uri(url));
+            }
+            catch (Exception e)
+            {
+                return "";
+            }
         }
 
         public static String ReplaceHtml(String str)
@@ -38,9 +44,9 @@ namespace 酷安_UWP
             return s;
         }
 
-        public static async Task<string> getCoolApkUserFace(String UName)
+        public static async Task<string> GetCoolApkUserFace(String UName)
         {
-            String body = await getMessage("https://www.coolapk.com/u/" + UName);
+            String body = await GetMessage("https://www.coolapk.com/u/" + UName);
             body = Regex.Split(body, @"<div class=""msg_box"">")[1];
             body = Regex.Split(body, @"src=""")[1];
             return Regex.Split(body, @"""")[0];

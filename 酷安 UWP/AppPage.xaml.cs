@@ -23,7 +23,7 @@ namespace 酷安_UWP
         private async void Page_Loaded(object sender, RoutedEventArgs e)
         {
             this.Tag = MainPage.applink;
-            LaunchAppViewLoad(await WebMessage.getMessage(Tag.ToString()));
+            LaunchAppViewLoad(await WebMessage.GetMessage(Tag.ToString()));
         }
         private async void LaunchAppViewLoad(String str)
         {
@@ -129,38 +129,44 @@ namespace 酷安_UWP
             String knstr = WebMessage.ReplaceHtml(Regex.Split(Regex.Split(str, "开发者名称：")[1] ,"</p>")[0]);
             try { 
                 AppKNText.Text = knstr;
-                AppKImage.Source = new BitmapImage(new Uri(await WebMessage.getCoolApkUserFace(knstr), UriKind.RelativeOrAbsolute));
+                AppKImage.Source = new BitmapImage(new Uri(await WebMessage.GetCoolApkUserFace(knstr), UriKind.RelativeOrAbsolute));
             } catch (Exception e)
             {
                 KPanel.Visibility = Visibility.Collapsed;
             }
         }
 
-        private void copyM_Click(object sender, RoutedEventArgs e)
+        private void CopyM_Click(object sender, RoutedEventArgs e)
         {
-            DataPackage dataPackage = new DataPackage();
-            // copy 
-            dataPackage.RequestedOperation = DataPackageOperation.Copy;
-            switch (((MenuFlyoutItem)sender).Tag.ToString()) {
-                case "0":
-                    dataPackage.SetText(jstr);
-                    break;
-                case "1":
-                    dataPackage.SetText(dstr);
-                    break;
-                case "2":
-                    dataPackage.SetText(Regex.Split(Tag.ToString(),"/")[4]);
-                    break;
-                case "3":
-                    dataPackage.SetText(vstr);
-                    break;
-                case "4":
-                    dataPackage.SetText(vmstr);
-                    break;
+
+            if (sender is MenuFlyoutItem selectedItem)
+            {
+                DataPackage dp = new DataPackage();
+                // copy 
+                if (selectedItem.Tag.ToString() == "0")
+                {
+                    dp.SetText(jstr);
+                }
+                else if (selectedItem.Tag.ToString() == "1")
+                {
+                    dp.SetText(dstr);
+                }
+                else if (selectedItem.Tag.ToString() == "2")
+                {
+                    dp.SetText(Regex.Split(Tag.ToString(), "/")[4]);
+                }
+                else if (selectedItem.Tag.ToString() == "3")
+                {
+                    dp.SetText(vstr);
+                }
+                else if (selectedItem.Tag.ToString() == "24")
+                {
+                    dp.SetText(vmstr);
+                }
+                Clipboard.SetContent(dp);
             }
-            
         }
-        private void gotoUri_Click(object sender, RoutedEventArgs e)
+        private void GotoUri_Click(object sender, RoutedEventArgs e)
         {
             string uriToLaunch = MainPage.applink;
             var uri = new Uri(uriToLaunch);
