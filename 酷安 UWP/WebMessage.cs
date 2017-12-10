@@ -7,6 +7,7 @@ using System.IO;
 using Windows.Web.Http;
 using Windows.Web.Http.Filters;
 using System.Text.RegularExpressions;
+using Windows.Networking.BackgroundTransfer;
 
 namespace 酷安_UWP
 {
@@ -23,7 +24,6 @@ namespace 酷安_UWP
                 return "";
             }
         }
-
         public static String ReplaceHtml(String str)
         {
             //换行和段落

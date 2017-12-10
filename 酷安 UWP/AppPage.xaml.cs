@@ -5,6 +5,9 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Windows.ApplicationModel.DataTransfer;
+using Windows.Networking.BackgroundTransfer;
+using Windows.Storage;
+using Windows.System;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media.Imaging;
@@ -13,12 +16,12 @@ namespace 酷安_UWP
 {
     public sealed partial class AppPage : Page
     {
-        String jstr = "", vmstr = "", dstr = "", vstr, mstr, nstr, iurl, vtstr, rstr, pstr;
+        String jstr = "", vmstr = "", dstr = "", vstr, mstr, nstr, iurl, vtstr, rstr, pstr,ddstr;
 
         public AppPage()
         {
             this.InitializeComponent();
-            
+
         }
         private async void Page_Loaded(object sender, RoutedEventArgs e)
         {
@@ -27,7 +30,7 @@ namespace 酷安_UWP
         }
         private async void LaunchAppViewLoad(String str)
         {
-            try { jstr = WebMessage.ReplaceHtml(Regex.Split(Regex.Split(Regex.Split(str, "应用简介</p>")[1], @"<div class=""apk_left_title_info"">")[1], "</div>")[0].Trim()); } catch(Exception e) { }
+            try { jstr = WebMessage.ReplaceHtml(Regex.Split(Regex.Split(Regex.Split(str, "应用简介</p>")[1], @"<div class=""apk_left_title_info"">")[1], "</div>")[0].Trim()); } catch (Exception e) { }
             try { vmstr = WebMessage.ReplaceHtml(Regex.Split(Regex.Split(str, @"<p class=""apk_left_title_info"">")[2], "</p>")[0].Replace("<br />", "").Replace("<br/>", "").Trim()); } catch (Exception e) { }
             try { dstr = WebMessage.ReplaceHtml(Regex.Split(Regex.Split(str, @"<p class=""apk_left_title_info"">")[1], "</p>")[0].Replace("<br />", "").Replace("<br/>", "").Trim()); } catch (Exception e) { }
             vstr = Regex.Split(str, @"<p class=""detail_app_title"">")[1].Split('>')[1].Split('<')[0].Trim();
@@ -37,6 +40,9 @@ namespace 酷安_UWP
             vtstr = Regex.Split(str, "更新时间：")[1].Split('<')[0].Trim();
             rstr = Regex.Split(str, @"<p class=""rank_num"">")[1].Split('<')[0].Trim();
             pstr = Regex.Split(str, @"<p class=""apk_rank_p1"">")[1].Split('<')[0].Trim();
+
+            //Download URI
+            ddstr = Regex.Split(Regex.Split(Regex.Split(str, "function onDownloadApk")[1], "window.location.href")[1], @"""")[1];
 
             AppIconImage.Source = new BitmapImage(new Uri(iurl, UriKind.RelativeOrAbsolute));
             AppTitleText.Text = nstr;
@@ -55,14 +61,12 @@ namespace 酷安_UWP
             }
             else
             {
-               //当应用无点评的时候（小编要是一个一个全好好点评我就不用加判断了嘛！）
+                //当应用无点评的时候（小编要是一个一个全好好点评我就不用加判断了嘛！）
                 AppVMText.Text = dstr;
                 AppDText.Text = "";
             }
             if (dstr.Contains("更新时间") && dstr.Contains("ROM") && dstr.Contains("名称")) UPanel.Visibility = Visibility.Collapsed;
-
-
-
+            
 
             //加载截图！
             String images = Regex.Split(Regex.Split(str, @"<div class=""ex-screenshot-thumb-carousel"">")[1], "</div>")[0];
@@ -124,10 +128,10 @@ namespace 酷安_UWP
                 star5.Symbol = Symbol.OutlineStar;
             }
 
-            
+
             //获取开发者
-            String knstr = WebMessage.ReplaceHtml(Regex.Split(Regex.Split(str, "开发者名称：")[1] ,"</p>")[0]);
-            try { 
+            String knstr = WebMessage.ReplaceHtml(Regex.Split(Regex.Split(str, "开发者名称：")[1], "</p>")[0]);
+            try {
                 AppKNText.Text = knstr;
                 AppKImage.Source = new BitmapImage(new Uri(await WebMessage.GetCoolApkUserFace(knstr), UriKind.RelativeOrAbsolute));
             } catch (Exception e)
@@ -166,15 +170,10 @@ namespace 酷安_UWP
                 Clipboard.SetContent(dp);
             }
         }
-        private void GotoUri_Click(object sender, RoutedEventArgs e)
+        private async void GotoUri_Click(object sender, RoutedEventArgs e)
         {
-            string uriToLaunch = MainPage.applink;
-            var uri = new Uri(uriToLaunch);
-            async void LaunchWithEdge()
-            {
-                var options = new Windows.System.LauncherOptions();
-                options.TargetApplicationPackageFamilyName = "Microsoft.MicrosoftEdge_8wekyb3d8bbwe";
-            }
+            // Launch the URI
+            var success = await Launcher.LaunchUriAsync(new Uri(MainPage.applink));
         }
 
         private void BackButton_Click(object sender, RoutedEventArgs e)
@@ -193,6 +192,13 @@ namespace 酷安_UWP
         {
             ScreenShotFlipView.Visibility = Visibility.Collapsed;
             CloseFlip.Visibility = Visibility.Collapsed;
+        }
+
+
+        private async void DownloadButton_Click(object sender, RoutedEventArgs e)
+        {
+            // Download the URI
+            var success = await Launcher.LaunchUriAsync(new Uri(ddstr));
         }
     }
 }

@@ -337,7 +337,7 @@
                     </Grid>
 
                     <Grid x:Name="P2" Visibility="Collapsed">
-                        <Pivot x:Name="Pivot2" Margin="0,50,0,0">
+                        <Pivot x:Name="Pivot2" Margin="0,57,0,0">
                             <PivotItem Header="已发布" Margin="0,5,0,0" Background="#FFFFFFFF">
                                 <ListView x:Name="xl1">
                                 </ListView>
@@ -358,7 +358,7 @@
                         </Rectangle.Fill>
                     </Rectangle>
 
-                    <Grid x:Name="P3" Margin="0,50,0,0" Visibility="Collapsed">
+                    <Grid x:Name="P3" Margin="0,57,0,0" Visibility="Collapsed">
                         <Grid Height="100" VerticalAlignment="Top" Background="{ThemeResource CoolApk_Theme}">
                             <SymbolIcon Margin="10" HorizontalAlignment="Left" Width="80" Foreground="#FFF0F0F0" Symbol="Contact" />
                             <Image x:Name="User_Face" Margin="10" HorizontalAlignment="Left" Width="80" />
@@ -373,7 +373,6 @@
                     </Grid>
 
                 </Grid>
-
 
             </Grid>
 

@@ -47,10 +47,9 @@
                 </Grid>
                 <Grid Background="White" Padding="10" Height="50">
                     <TextBlock x:Name="AppXText" x:FieldModifier="Public" Text="" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Center" Foreground="#AA000000"/>
-                    <Button Content="下载" HorizontalAlignment="Right" VerticalAlignment="Top" Width="78" Background="{StaticResource CoolApk_Theme}" Foreground="White" />
+                    <Button x:Name="DownloadButton" Click="DownloadButton_Click" Content="下载" HorizontalAlignment="Right" VerticalAlignment="Top" Width="78" Background="{StaticResource CoolApk_Theme}" Foreground="White" />
                 </Grid>
-                <Rectangle Height="1" Fill="#FFF0F0F0" />
-                <Grid Height="auto" x:Name="DPanel" Background="White" Padding="10" >
+                <Grid Visibility="Collapsed" Margin="0,1,0,0" x:Name="DPanel" Background="White" Padding="10" >
                     <TextBlock x:Name="AppDText" x:FieldModifier="Public" TextWrapping="Wrap" Text="" TextAlignment="Center" Foreground="Black" VerticalAlignment="Top"/>
                 </Grid>
 
