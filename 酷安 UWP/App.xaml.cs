@@ -20,13 +20,13 @@ namespace 酷安_UWP
     /// <summary>
     /// 提供特定于应用程序的行为，以补充默认的应用程序类。
     /// </summary>
-    sealed partial class App : Application
+    sealed partial class Application : Windows.UI.Xaml.Application
     {
         /// <summary>
         /// 初始化单一实例应用程序对象。这是执行的创作代码的第一行，
         /// 已执行，逻辑上等同于 main() 或 WinMain()。
         /// </summary>
-        public App()
+        public Application()
         {
             this.InitializeComponent();
             this.Suspending += OnSuspending;

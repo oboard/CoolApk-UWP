@@ -9,9 +9,9 @@
 
     <Grid x:Name="GridRootLayout" Background="White">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition x:Name="cd0" Width="0"/>
-            <ColumnDefinition x:Name="cd1" Width="*"/>
-            <ColumnDefinition x:Name="cd2" Width="0"/>
+            <ColumnDefinition x:Name="ColumnDefinition0" Width="0"/>
+            <ColumnDefinition x:Name="ColumnDefinition1" Width="*"/>
+            <ColumnDefinition x:Name="ColumnDefinition2" Width="0"/>
         </Grid.ColumnDefinitions>
 
         <VisualStateManager.VisualStateGroups>
@@ -21,13 +21,12 @@
                         <AdaptiveTrigger MinWindowWidth="1000" />
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
-                        <Setter Target="cd0.Width" Value="50"></Setter>
-                        <Setter Target="cd1.Width" Value="500"></Setter>
-                        <Setter Target="cd2.Width" Value="*"></Setter>
+                        <Setter Target="ColumnDefinition0.Width" Value="50"/>
+                        <Setter Target="ColumnDefinition1.Width" Value="500"/>
+                        <Setter Target="ColumnDefinition2.Width" Value="*"/>
+                        <Setter Target="BottomBar.Visibility" Value="Collapsed"/>
                         <Setter Target="BottomBarShadow.Visibility" Value="Collapsed"/>
                         <Setter Target="ViewFrameGrid.Grid.Column" Value="2"/>
-                        <Setter Target="ViewFrameShadow.Visibility" Value="Visible"/>
-                        <Setter Target="BottomBarrd.Height" Value="0"></Setter>
                     </VisualState.Setters>
                 </VisualState>
             </VisualStateGroup>
@@ -35,7 +34,7 @@
 
         <Grid>
             <StackPanel Background="#FFF0F0F0">
-                <Button x:Name="LeftButton1" Click="Bar_Click" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Height="50" Background="#00000000" Tag="1" Foreground="Black">
+                <Button x:Name="LeftButton1" Click="Bar_Click" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Height="50" Background="#00000000" Tag="1" Foreground="{StaticResource CoolApk_Theme_Fore}">
                     <SymbolIcon Symbol="Home"/>
                 </Button>
                 <Button x:Name="LeftButton2" Click="Bar_Click" Visibility="Collapsed" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Height="50" Background="#00000000" Tag="2" Foreground="Black">
@@ -56,31 +55,15 @@
         </Grid>
 
         <Grid Grid.Column="1">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="*"/>
-                <RowDefinition x:Name="BottomBarrd" Height="60"/>
-            </Grid.RowDefinitions>
 
             <Grid>
 
                 <Grid Grid.RowSpan="2" Background="#FFF0F0F0">
 
-                    <Grid Height="105" VerticalAlignment="Top" Background="{ThemeResource CoolApk_Theme}">
-                        <Grid Margin="10" Background="#20FFFFFF" CornerRadius="5" Height="45" VerticalAlignment="Top">
-                            <Button x:Name="SearchBack" Visibility="Collapsed" Click="App_Back" HorizontalAlignment="Left" VerticalAlignment="Stretch" Width="45" Background="#00000000">
-                                <SymbolIcon Foreground="White" Symbol="Back"/>
-                            </Button>
-                            <TextBox x:Name="SearchText" Padding="10,0,0,0" TextWrapping="Wrap" Background="#00000000" BorderBrush="#00000000" Foreground="White" SelectionHighlightColor="#CC969696" TextAlignment="Left" Margin="0,10,45,0" VerticalAlignment="Center" KeyUp="SearchText_KeyUp" />
-                            <Button Click="SearchButton_Click" HorizontalAlignment="Right" VerticalAlignment="Stretch" Width="45" Background="#00000000">
-                                <SymbolIcon Foreground="White" Symbol="Zoom"/>
-                            </Button>
-                        </Grid>
-                    </Grid>
-
                     <Grid x:Name="P1">
 
-                        <Pivot x:Name="Pivot1" Margin="0,57,0,0" >
-                            <PivotItem Header="应用" Margin="0">
+                        <Pivot x:Name="Pivot1" Margin="0,0,0,0" Background="{ThemeResource SystemControlAcrylicElementBrush}">
+                            <PivotItem Header="应用" Margin="0" Background="#EFEFEF">
                                 <Grid>
                                     <ScrollViewer>
                                         <StackPanel>
@@ -88,37 +71,20 @@
                                                 <TextBlock Text="最近更新" Height="auto" VerticalAlignment="Top" Margin="10,10,0,0" />
                                                 <GridView x:Name="updateview" Margin="0,35,0,10" Padding="10" SelectionChanged="Updateview_SelectionChanged" HorizontalAlignment="Center"/>
                                             </Grid>
-                                            <Grid Height="80"  Background="White" Margin="0,5">
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="*"/>
-                                                    <ColumnDefinition Width="*"/>
-                                                </Grid.ColumnDefinitions>
-                                                <Grid>
-                                                    <TextBlock HorizontalAlignment="Left" Margin="20,20,0,0" TextWrapping="Wrap" Text="猜你喜欢" VerticalAlignment="Top"/>
-                                                    <TextBlock HorizontalAlignment="Left" Margin="20,0,0,20" TextWrapping="Wrap" Text="偶遇一个APP" Foreground="#FFFF5555" FontSize="13" VerticalAlignment="Bottom"/>
-                                                    <Image x:Name="CatchLoveImage" Margin="10" HorizontalAlignment="Right" Width="60"/>
-                                                    <AppBarButton x:Name="CatchLoveButton" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Width="Auto" Click="CatchLoveButton_Click" />
-                                                </Grid>
-                                                <Grid Grid.Column="1">
-                                                    <TextBlock HorizontalAlignment="Left" Margin="20,20,0,0" TextWrapping="Wrap" Text="酷选" VerticalAlignment="Top"/>
-                                                    <TextBlock HorizontalAlignment="Left" Margin="20,0,0,20" TextWrapping="Wrap"  Text="众编每日推荐" Foreground="#FFFF5555" FontSize="13" VerticalAlignment="Bottom"/>
-                                                    <Image x:Name="CatchLoveImage2" Margin="10" HorizontalAlignment="Right" Width="60"/>
-                                                    <AppBarButton x:Name="CatchLoveButton2"  VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Width="Auto" Click="CatchLoveButton_Click"/>
-                                                </Grid>
-                                            </Grid>
-                                            <Grid Height="auto" Background="White">
+                                            <Grid Height="auto" Background="White" Margin="0,5">
                                                 <TextBlock Text="热门应用" Height="auto" VerticalAlignment="Top" Margin="10,10,0,0" />
                                                 <GridView x:Name="hotview" Margin="0,35,0,10" Padding="10" SelectionChanged="Updateview_SelectionChanged" HorizontalAlignment="Center"/>
                                             </Grid>
-                                            <Grid Height="auto" Background="White" Margin="0,5">
+                                            <Grid Height="auto" Background="White">
                                                 <TextBlock Text="开发者应用" Height="auto" VerticalAlignment="Top" Margin="10,10,0,0" />
                                                 <GridView x:Name="developerview" Margin="0,35,0,10" Padding="10" SelectionChanged="Updateview_SelectionChanged" HorizontalAlignment="Center"/>
                                             </Grid>
+                                            <Border Height="60"/>
                                         </StackPanel>
                                     </ScrollViewer>
                                 </Grid>
                             </PivotItem>
-                            <PivotItem Header="游戏" Margin="0">
+                            <PivotItem Header="游戏" Margin="0" Background="#EFEFEF">
                                 <ScrollViewer>
                                     <StackPanel>
                                         <Grid Background="White" VerticalAlignment="Top">
@@ -131,12 +97,13 @@
 
                                             </ListBox>
                                         </Grid>
+                                        <Border Height="60"/>
                                     </StackPanel>
                                 </ScrollViewer>
                             </PivotItem>
-                            <PivotItem Header="分类" Margin="0">
+                            <PivotItem Header="分类" Margin="0" Background="#EFEFEF">
                                 <ScrollViewer>
-                                    <StackPanel Background="#FFF0F0F0">
+                                    <StackPanel>
                                         <TextBlock Text="应用分类" Height="auto" VerticalAlignment="Top" Margin="10,10,0,10" />
                                         <StackPanel Background="White">
                                             <StackPanel VerticalAlignment="Top">
@@ -330,26 +297,40 @@
                                                 </Grid>
                                             </StackPanel>
                                         </StackPanel>
+                                        <Border Height="60"/>
                                     </StackPanel>
                                 </ScrollViewer>
                             </PivotItem>
                         </Pivot>
+
+                        <Grid Height="50" VerticalAlignment="Top">
+                            <Grid x:Name="SearchBox" Visibility="Collapsed" Margin="5" Background="{StaticResource CoolApk_Theme_Back}" CornerRadius="5" Height="40" VerticalAlignment="Top">
+                                <Button x:Name="SearchBack" Click="App_Back" HorizontalAlignment="Left" VerticalAlignment="Stretch" Width="40" Background="#00000000">
+                                    <SymbolIcon Foreground="{ThemeResource CoolApk_Theme_Fore}" Symbol="Back"/>
+                                </Button>
+                                <TextBox x:Name="SearchText" Padding="10,0,0,0" TextWrapping="Wrap" Background="#00000000" BorderBrush="#00000000" Foreground="{ThemeResource CoolApk_Theme_Fore}" SelectionHighlightColor="#CC969696" TextAlignment="Left" Margin="0,10,45,0" VerticalAlignment="Center" KeyUp="SearchText_KeyUp" />
+                            </Grid>
+                            <Button Click="SearchButton_Click" Margin="5" HorizontalAlignment="Right" VerticalAlignment="Stretch" Width="40" Background="#00000000">
+                                <SymbolIcon Foreground="{ThemeResource CoolApk_Theme_Fore}" Symbol="Zoom"/>
+                            </Button>
+                        </Grid>
+
                     </Grid>
 
                     <Grid x:Name="P2" Visibility="Collapsed">
-                        <Pivot x:Name="Pivot2" Margin="0,57,0,0">
-                            <PivotItem Header="已发布" Margin="0,5,0,0" Background="#FFFFFFFF">
+                        <Pivot x:Name="Pivot2">
+                            <PivotItem Header="已发布" Background="#EFEFEF" Margin="0,5,0,0">
                                 <ListView x:Name="xl1">
                                 </ListView>
                             </PivotItem>
-                            <PivotItem Header="已下架" Margin="0,5,0,0" Background="#FFF0F0F0">
+                            <PivotItem Header="已下架" Background="#EFEFEF" Margin="0,5,0,0">
                                 <ListView x:Name="xl2">
                                 </ListView>
                             </PivotItem>
                         </Pivot>
                     </Grid>
 
-                    <Rectangle Height="5" Margin="0,105,0,0" VerticalAlignment="Top">
+                    <Rectangle Height="5" Margin="0,50,0,0" VerticalAlignment="Top">
                         <Rectangle.Fill>
                             <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                                 <GradientStop Color="#11000000" Offset="0"/>
@@ -358,25 +339,24 @@
                         </Rectangle.Fill>
                     </Rectangle>
 
-                    <Grid x:Name="P3" Margin="0,57,0,0" Visibility="Collapsed">
-                        <Grid Height="100" VerticalAlignment="Top" Background="{ThemeResource CoolApk_Theme}">
-                            <SymbolIcon Margin="10" HorizontalAlignment="Left" Width="80" Foreground="#FFF0F0F0" Symbol="Contact" />
+                    <Grid x:Name="P3" Margin="0,50,0,0" Visibility="Collapsed">
+                        <Grid Height="100" VerticalAlignment="Top" Background="{ThemeResource CoolApk_Theme_Back}">
+                            <SymbolIcon Margin="10" HorizontalAlignment="Left" Width="80" Foreground="{StaticResource CoolApk_Theme}" Symbol="Contact" />
                             <Image x:Name="User_Face" Margin="10" HorizontalAlignment="Left" Width="80" />
-                            <TextBlock x:Name="User_Name" Text="请登录" FontSize="20" Foreground="White" Margin="100,0" HorizontalAlignment="Left" VerticalAlignment="Center" />
+                            <TextBlock x:Name="User_Name" Text="请登录" FontSize="20" Foreground="{StaticResource CoolApk_Theme_Fore}" Margin="100,0" HorizontalAlignment="Left" VerticalAlignment="Center" />
                             <Button Click="Login_Click" Background="#00000000" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"/>
                         </Grid>
                         <ScrollViewer Margin="0,100,0,0">
                             <StackPanel>
-
+                                
+                                <Border Height="60"/>
                             </StackPanel>
                         </ScrollViewer>
                     </Grid>
-
                 </Grid>
-
             </Grid>
 
-            <Rectangle x:Name="BottomBarShadow" Height="5" VerticalAlignment="Bottom" >
+            <Rectangle x:Name="BottomBarShadow" Height="5" VerticalAlignment="Bottom" Margin="0,0,0,60">
                 <Rectangle.Fill>
                     <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                         <GradientStop Color="#11000000" Offset="1"/>
@@ -384,13 +364,13 @@
                     </LinearGradientBrush>
                 </Rectangle.Fill>
             </Rectangle>
-            <Grid x:Name="BottomBar" VerticalAlignment="Bottom" Grid.Row="1">
+            <Grid x:Name="BottomBar" Background="{ThemeResource SystemControlAcrylicElementBrush}" VerticalAlignment="Bottom" Height="60">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition x:Name="dcd" Width="0"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
-                <AppBarButton x:Name="BottomBar1" Click="Bar_Click" Tag="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Icon = "Home" Label = "酷市场" Width="Auto" Foreground="Black"/>
+                <AppBarButton x:Name="BottomBar1" Click="Bar_Click" Tag="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Icon = "Home" Label = "应用 · 游戏" Width="Auto" Foreground="Black"/>
                 <AppBarButton x:Name="BottomBar2" Click="Bar_Click" Tag="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Icon = "ContactPresence" Label = "开发者" Grid.Column="1" Width="Auto" Foreground="Black"/>
                 <AppBarButton x:Name="BottomBar3" Click="Bar_Click" Tag="3" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Icon = "Contact" Label = "我" Grid.Column="2" Width="Auto" Foreground="Black"/>
             </Grid>
@@ -398,19 +378,11 @@
             <Border Height="70" Width="70" VerticalAlignment="Bottom" Background="{ThemeResource CoolApk_Theme}" BorderBrush="White" CornerRadius="100" BorderThickness="5" Grid.RowSpan="2">
                 <SymbolIcon Symbol="Add" Foreground="White"/>
             </Border>
-            -->
+
+-->
         </Grid>
+        <Frame x:Name="ViewFrameS" Grid.Column="1" Margin="0,50,0,0" x:FieldModifier="Public" Visibility="Collapsed" />
 
-        <Frame x:Name="ViewFrameS" Grid.Column="1" Margin="0,60,0,0" x:FieldModifier="Public" Visibility="Collapsed" />
-
-        <Rectangle x:Name="ViewFrameShadow" Grid.Column="1" HorizontalAlignment="Right" Width="5" Visibility="Collapsed">
-            <Rectangle.Fill>
-                <LinearGradientBrush EndPoint="1,0.5" StartPoint="0,0.5">
-                    <GradientStop Color="{ThemeResource CoolApk_Begin}" Offset="1"/>
-                    <GradientStop Color="{ThemeResource CoolApk_End}"/>
-                </LinearGradientBrush>
-            </Rectangle.Fill>
-        </Rectangle>
         <Grid x:Name="ViewFrameGrid" Grid.Column="1">
             <Frame x:Name="ViewFrame" x:FieldModifier="Public" Visibility="Collapsed" />
         </Grid>

@@ -24,24 +24,6 @@ namespace 酷安_UWP
     /// </summary>
     public sealed partial class MainPage : Page
     {
-        //最近更新
-        Grid[] newUpdate;
-        Image[] newUpdateImage;
-        TextBlock[] newUpdateText;
-        TextBlock[] newUpdateTime;
-
-        //开发者应用
-        Grid[] developerApp;
-        Image[] developerAppImage;
-        TextBlock[] developerAppText;
-        TextBlock[] developerAppName;
-
-        //热门应用
-        Grid[] hotApp;
-        Image[] hotAppImage;
-        TextBlock[] hotAppText;
-        TextBlock[] hotAppName;
-
         int itemw = 110, itemh = 90;
         
         public static Frame _ViewFrame, _ViewFrameS;
@@ -51,8 +33,11 @@ namespace 酷安_UWP
 
         //App链接
         public static String applink = "", searchlink = "";
-        
-        Color CoolColor = Color.FromArgb(255, 72, 174, 76);
+
+        Color CoolColor = ((SolidColorBrush)Application.Current.Resources["CoolApk_Theme"]).Color;
+        Color CoolForeColor = ((SolidColorBrush)Application.Current.Resources["CoolApk_Theme_Fore"]).Color;
+        Color CoolBackColor = Colors.White;
+        //Color.FromArgb(255, 72, 174, 76);
 
         public MainPage()
         {
@@ -62,32 +47,32 @@ namespace 酷安_UWP
             {
                 StatusBar statusBar = StatusBar.GetForCurrentView();
                 statusBar.BackgroundOpacity = 1; // 透明度
-                statusBar.BackgroundColor = CoolColor;
-                statusBar.ForegroundColor = Colors.White;
+                statusBar.BackgroundColor = CoolBackColor;
+                statusBar.ForegroundColor = CoolForeColor;
             }
             else
             {
                 var view = ApplicationView.GetForCurrentView().TitleBar;
                 // active
-                view.BackgroundColor = CoolColor;
-                view.ForegroundColor = Colors.White;
+                view.BackgroundColor = CoolBackColor;
+                view.ForegroundColor = CoolForeColor;
 
                 // inactive
-                view.InactiveBackgroundColor = CoolColor;
-                view.InactiveForegroundColor = Colors.White;
+                view.InactiveBackgroundColor = CoolBackColor;
+                view.InactiveForegroundColor = CoolForeColor;
 
                 // button
-                view.ButtonBackgroundColor = CoolColor;
-                view.ButtonForegroundColor = Colors.White;
+                view.ButtonBackgroundColor = CoolBackColor;
+                view.ButtonForegroundColor = CoolForeColor;
 
-                view.ButtonHoverBackgroundColor = CoolColor;
-                view.ButtonHoverForegroundColor = Colors.White;
+                view.ButtonHoverBackgroundColor = CoolBackColor;
+                view.ButtonHoverForegroundColor = CoolForeColor;
 
-                view.ButtonPressedBackgroundColor = CoolColor;
-                view.ButtonPressedForegroundColor = Colors.White;
+                view.ButtonPressedBackgroundColor = CoolBackColor;
+                view.ButtonPressedForegroundColor = CoolForeColor;
 
-                view.ButtonInactiveBackgroundColor = CoolColor;
-                view.ButtonInactiveForegroundColor = Colors.White;
+                view.ButtonInactiveBackgroundColor = CoolBackColor;
+                view.ButtonInactiveForegroundColor = CoolForeColor;
 
                 //标题栏返回按钮事件注册
                 Windows.UI.Core.SystemNavigationManager.GetForCurrentView().BackRequested += App_BackRequested;
@@ -135,7 +120,6 @@ namespace 酷安_UWP
             }
             //网络信息
             await LoadNewUpdate(await WebMessage.GetMessage("https://www.coolapk.com/"));
-            await LoadCatchLove(await WebMessage.GetMessage("https://www.coolapk.com/apk?p=2"));
             await LoadHotApp(await WebMessage.GetMessage("https://www.coolapk.com/apk/recommend"));
             await LoadDeveloperApp(await WebMessage.GetMessage("https://www.coolapk.com/apk/developer"));
             await LoadHotGame(await WebMessage.GetMessage("https://www.coolapk.com/game/"));
@@ -167,7 +151,7 @@ namespace 酷安_UWP
             var m = SearchText.Margin;
             m.Left = 0;
             SearchText.Margin = m;
-            SearchBack.Visibility = Visibility.Collapsed;
+            SearchBox.Visibility = Visibility.Collapsed;
 
             App_Back();
         }
@@ -186,7 +170,7 @@ namespace 酷安_UWP
                 }
                 Image newI = new Image();
                 {
-                    var margin = hotAppImage[i].Margin;
+                    var margin = newI.Margin;
                     margin.Left = 10;
                     margin.Top = 10;
                     margin.Right = 10;
@@ -232,18 +216,14 @@ namespace 酷安_UWP
             String[] bodys = Regex.Split(body, @"\n");
             for (int i = 0; i < 9; i++)
             {
-                Grid newGrid = new Grid();
+                Grid newGrid = new Grid
                 {
-                    newGrid.Height = 60;
-                    newGrid.Tag = bodys[i * 15 + 6].Split('"')[1].Split('/')[2];
-                }
+                    Height = 60,
+                    Tag = bodys[i * 15 + 6].Split('"')[1].Split('/')[2]
+                };
                 Image newImage = new Image();
                 {
-                    var margin = newImage.Margin;
-                    margin.Left = 20;
-                    margin.Top = 10;
-                    margin.Right = 0;
-                    margin.Bottom = 10;
+                    var margin = new Thickness(20, 10, 0, 10);
                     newImage.Margin = margin;
                     newImage.Width = 40;
                     newImage.HorizontalAlignment = HorizontalAlignment.Left;
@@ -290,71 +270,54 @@ namespace 酷安_UWP
         {
             String body = Regex.Split(str, @"<div class=""app_list_left"">")[1];
             String[] bodys = Regex.Split(body, @"\n");
-            hotApp = new Grid[20];
-            hotAppImage = new Image[20];
-            hotAppText = new TextBlock[20];
-            hotAppName = new TextBlock[20];
+
+            hotview.Items.Clear();
+
             for (int i = 0; i < 20; i++)
             {
-                try
-                {
-                    hotApp[i].Children.Remove(hotAppImage[i]);
-                    hotApp[i].Children.Remove(hotAppText[i]);
-                    hotApp[i].Children.Remove(hotAppName[i]);
-                    hotview.Items.Remove(hotApp[i]);
-                }
-                catch (Exception e)
-                {
-                }
                 try {
-                    hotApp[i] = new Grid();
+                    Grid hotApp = new Grid
                     {
-                        hotApp[i].Height = itemh;
-                        hotApp[i].Width = itemw;
-                        hotApp[i].Tag = bodys[i * 15 + 5].Split('"')[1];
-                    }
-                    hotAppImage[i] = new Image();
+                        Height = itemh,
+                        Width = itemw,
+                        Tag = bodys[i * 15 + 5].Split('"')[1]
+                    };
+                    Image hotAppImage = new Image();
                     {
-                        var margin = hotAppImage[i].Margin;
-                        margin.Left = 10;
-                        margin.Top = 10;
-                        margin.Right = 10;
-                        margin.Bottom = 40;
-                        hotAppImage[i].Margin = margin;
+                        var margin = new Thickness(10, 10, 10, 40);
+                        hotAppImage.Margin = margin;
                         try
                         {
-                            hotAppImage[i].Source = new BitmapImage(new Uri(bodys[i * 15 + 5 + 3].Split('"')[3], UriKind.RelativeOrAbsolute));
+                            hotAppImage.Source = new BitmapImage(new Uri(bodys[i * 15 + 5 + 3].Split('"')[3], UriKind.RelativeOrAbsolute));
                         }
                         catch (Exception e)
                         {
                         }
                         //                    await WebMessage.DownloadImage(bodys[(i + 1) * 2]);
                     }
-                    hotAppText[i] = new TextBlock();
+                    TextBlock hotAppText = new TextBlock
                     {
-                        var margin = hotAppText[i].Margin;
-                        margin.Bottom = 20;
-                        hotAppText[i].Margin = margin;
-                        hotAppText[i].Height = 20;
-                        hotAppText[i].FontSize = 13;
-                        hotAppText[i].TextAlignment = TextAlignment.Center;
-                        hotAppText[i].VerticalAlignment = VerticalAlignment.Bottom;
-                        hotAppText[i].Foreground = new SolidColorBrush(Colors.Black);
-                        hotAppText[i].Text = bodys[i * 15 + 5 + 5].Split('>')[1].Split('<')[0];
-                    }
-                    hotAppName[i] = new TextBlock();
+                        Margin = new Thickness(0, 0, 0, 20),
+                        Height = 20,
+                        FontSize = 13,
+                        TextAlignment = TextAlignment.Center,
+                        VerticalAlignment = VerticalAlignment.Bottom,
+                        Foreground = new SolidColorBrush(Colors.Black),
+                        Text = bodys[i * 15 + 5 + 5].Split('>')[1].Split('<')[0]
+                    };
+                    TextBlock hotAppName = new TextBlock
                     {
-                        hotAppName[i].Height = 20;
-                        hotAppName[i].FontSize = 10;
-                        hotAppName[i].TextAlignment = TextAlignment.Center;
-                        hotAppName[i].VerticalAlignment = VerticalAlignment.Bottom;
-                        hotAppName[i].Foreground = new SolidColorBrush(Colors.Black);
-                        hotAppName[i].Text = bodys[i * 15 + 5 + 7].Split('>')[1].Split('<')[0].Split(' ')[0];
-                    }
-                    hotApp[i].Children.Add(hotAppImage[i]);
-                    hotApp[i].Children.Add(hotAppText[i]);
-                    hotApp[i].Children.Add(hotAppName[i]);
-                    hotview.Items.Add(hotApp[i]);
+                        Height = 20,
+                        FontSize = 10,
+                        TextAlignment = TextAlignment.Center,
+                        VerticalAlignment = VerticalAlignment.Bottom,
+                        Foreground = new SolidColorBrush(Colors.Black),
+                        Text = bodys[i * 15 + 5 + 7].Split('>')[1].Split('<')[0].Split(' ')[0]
+                    };
+                    hotApp.Children.Add(hotAppImage);
+                    hotApp.Children.Add(hotAppText);
+                    hotApp.Children.Add(hotAppName);
+                    hotview.Items.Add(hotApp);
                 }
                 catch (Exception e)
                 {
@@ -368,80 +331,53 @@ namespace 酷安_UWP
         {
             String body = Regex.Split(str, @"<div class=""left_nav"">")[1];
             String[] bodys = Regex.Split(body, @"\n");
-            developerApp = new Grid[20];
-            developerAppImage = new Image[20];
-            developerAppText = new TextBlock[20];
-            developerAppName = new TextBlock[20];
+
+            developerview.Items.Clear();
+
             for (int i = 0; i < 20; i++)
             {
-                try
+                Grid developerApp = new Grid
                 {
-                    developerApp[i].Children.Remove(developerAppImage[i]);
-                    developerApp[i].Children.Remove(developerAppText[i]);
-                    developerApp[i].Children.Remove(developerAppName[i]);
-                    developerview.Items.Remove(developerApp[i]);
-                }
-                catch (Exception e)
+                    Height = itemh,
+                    Width = itemw,
+                    Tag = bodys[i * 15 + 4].Split('"')[1]
+                };
+                Image developerAppImage = new Image();
                 {
-                }
-                developerApp[i] = new Grid();
-                {
-                    developerApp[i].Height = itemh;
-                    developerApp[i].Width = itemw;
-                    developerApp[i].Tag = bodys[i * 15 + 4].Split('"')[1];
-                }
-                developerAppImage[i] = new Image();
-                {
-                    var margin = developerAppImage[i].Margin;
-                    margin.Left = 10;
-                    margin.Top = 10;
-                    margin.Right = 10;
-                    margin.Bottom = 40;
-                    developerAppImage[i].Margin = margin;
+                    developerAppImage.Margin = new Thickness(10, 10, 10, 40);
                     try
                     {
-                        developerAppImage[i].Source = new BitmapImage(new Uri(bodys[i * 15 + 4 + 3].Split('"')[3], UriKind.RelativeOrAbsolute));
+                        developerAppImage.Source = new BitmapImage(new Uri(bodys[i * 15 + 4 + 3].Split('"')[3], UriKind.RelativeOrAbsolute));
                     }
                     catch (Exception e)
                     {
                     }
                     //                    await WebMessage.DownloadImage(bodys[(i + 1) * 2]);
                 }
-                developerAppText[i] = new TextBlock();
+            TextBlock developerAppText = new TextBlock
                 {
-                    var margin = developerAppText[i].Margin;
-                    margin.Bottom = 20;
-                    developerAppText[i].Margin = margin;
-                    developerAppText[i].Height = 20;
-                    developerAppText[i].FontSize = 13;
-                    developerAppText[i].TextAlignment = TextAlignment.Center;
-                    developerAppText[i].VerticalAlignment = VerticalAlignment.Bottom;
-                    developerAppText[i].Foreground = new SolidColorBrush(Colors.Black);
-                    developerAppText[i].Text = bodys[i * 15 + 4 + 5].Split('>')[1].Split('<')[0];
-                }
-                developerAppName[i] = new TextBlock();
-                {
-                    developerAppName[i].Height = 20;
-                    developerAppName[i].FontSize = 8;
-                    developerAppName[i].TextAlignment = TextAlignment.Center;
-                    developerAppName[i].VerticalAlignment = VerticalAlignment.Bottom;
-                    developerAppName[i].Foreground = new SolidColorBrush(Colors.Black);
-                    developerAppName[i].Text = bodys[i * 15 + 4 + 9].Split('>')[1].Split('<')[0].Replace("开发者:","");
-                }
-                developerApp[i].Children.Add(developerAppImage[i]);
-                developerApp[i].Children.Add(developerAppText[i]);
-                developerApp[i].Children.Add(developerAppName[i]);
-                developerview.Items.Add(developerApp[i]);
+                    Margin = new Thickness(0, 0, 0, 20),
+                    Height = 20,
+                    FontSize = 13,
+                    TextAlignment = TextAlignment.Center,
+                    VerticalAlignment = VerticalAlignment.Bottom,
+                    Foreground = new SolidColorBrush(Colors.Black),
+                    Text = bodys[i * 15 + 4 + 5].Split('>')[1].Split('<')[0]
+            };
+            TextBlock developerAppName = new TextBlock
+            {
+                Height = 20,
+                FontSize = 8,
+                TextAlignment = TextAlignment.Center,
+                VerticalAlignment = VerticalAlignment.Bottom,
+                Foreground = new SolidColorBrush(Colors.Black),
+                Text = bodys[i * 15 + 4 + 9].Split('>')[1].Split('<')[0].Replace("开发者:", "")
+            };
+                developerApp.Children.Add(developerAppImage);
+                developerApp.Children.Add(developerAppText);
+                developerApp.Children.Add(developerAppName);
+                developerview.Items.Add(developerApp);
             }
-        }
-
-        private async Task LoadCatchLove(String str)
-        {
-            String body = Regex.Split(str , @"<div class=""applications"">")[1];
-            CatchLoveButton.Tag = Regex.Split(Regex.Split(body, @"<a href=""")[1], @""">")[0];
-            CatchLoveButton2.Tag = Regex.Split(Regex.Split(body, @"<a href=""")[2], @""">")[0];
-            CatchLoveImage.Source =  new BitmapImage(new Uri(Regex.Split(body, "<img")[1].Split('"')[1], UriKind.RelativeOrAbsolute));
-            CatchLoveImage2.Source = new BitmapImage(new Uri(Regex.Split(body, "<img")[2].Split('"')[1], UriKind.RelativeOrAbsolute));
         }
 
         private async Task LoadDeveloper(String str, ListView list)
@@ -530,68 +466,59 @@ namespace 酷安_UWP
             String body = str.Substring(str.IndexOf("<!--最近更新应用-->"), str.IndexOf("<!--应用推荐-->") - str.IndexOf("<!--最近更新应用-->"));
             body = Regex.Split(body, @"<div class=""applications"">")[1];
             String[] bodys = Regex.Split(body,@"\n");
-            newUpdate = new Grid[12];
-            newUpdateImage = new Image[12];
-            newUpdateText = new TextBlock[12];
-            newUpdateTime = new TextBlock[12];
+
+            updateview.Items.Clear();
+
             for (int i = 0; i < 12; i++)
             {
-                try
+                Grid newUpdate = new Grid();
                 {
-                    newUpdate[i].Children.Remove(newUpdateImage[i]);
-                    newUpdate[i].Children.Remove(newUpdateText[i]);
-                    newUpdate[i].Children.Remove(newUpdateTime[i]);
-                    updateview.Items.Remove(newUpdate[i]);
-                } catch(Exception e) {
+                    newUpdate.Height = itemh;
+                    newUpdate.Width = itemw;
+                    newUpdate.Tag = bodys[i * 12 + 1].Split('"')[1];
                 }
-                newUpdate[i] = new Grid();
+                Image newUpdateImage = new Image();
                 {
-                    newUpdate[i].Height = itemh;
-                    newUpdate[i].Width = itemw;
-                    newUpdate[i].Tag = bodys[i * 12 + 1].Split('"')[1];
-                }
-                newUpdateImage[i] = new Image();
-                {
-                    var margin = newUpdateImage[i].Margin;
+                    var margin = newUpdateImage.Margin;
                     margin.Left = 10;
                     margin.Top = 10;
                     margin.Right = 10;
                     margin.Bottom = 40;
-                    newUpdateImage[i].Margin = margin;
+                    newUpdateImage.Margin = margin;
                     try
                     {
-                        newUpdateImage[i].Source = new BitmapImage(new Uri(bodys[i * 12 + 4].Split('"')[1], UriKind.RelativeOrAbsolute));
+                        newUpdateImage.Source = new BitmapImage(new Uri(bodys[i * 12 + 4].Split('"')[1], UriKind.RelativeOrAbsolute));
                     }
                     catch (Exception e)
                     {
                     }
                     //                    await WebMessage.DownloadImage(bodys[(i + 1) * 2]);
                 }
-                newUpdateText[i] = new TextBlock();
+                TextBlock newUpdateText = new TextBlock();
                 {
-                    var margin = newUpdateText[i].Margin;
+                    var margin = newUpdateText.Margin;
                     margin.Bottom = 20;
-                    newUpdateText[i].Margin = margin;
-                    newUpdateText[i].Height = 20;
-                    newUpdateText[i].FontSize = 13;
-                    newUpdateText[i].TextAlignment = TextAlignment.Center;
-                    newUpdateText[i].VerticalAlignment = VerticalAlignment.Bottom;
-                    newUpdateText[i].Foreground = new SolidColorBrush(Colors.Black);
-                    newUpdateText[i].Text = bodys[i * 12 + 7].Split('>')[1].Split('<' )[0];
+                    newUpdateText.Margin = margin;
+                    newUpdateText.Height = 20;
+                    newUpdateText.FontSize = 13;
+                    newUpdateText.TextAlignment = TextAlignment.Center;
+                    newUpdateText.VerticalAlignment = VerticalAlignment.Bottom;
+                    newUpdateText.Foreground = new SolidColorBrush(Colors.Black);
+                    newUpdateText.Text = bodys[i * 12 + 7].Split('>')[1].Split('<' )[0];
                 }
-                newUpdateTime[i] = new TextBlock();
+                TextBlock newUpdateTime = new TextBlock();
                 {
-                    newUpdateTime[i].Height = 20;
-                    newUpdateTime[i].FontSize = 10;
-                    newUpdateTime[i].TextAlignment = TextAlignment.Center;
-                    newUpdateTime[i].VerticalAlignment = VerticalAlignment.Bottom;
-                    newUpdateTime[i].Foreground = new SolidColorBrush(Colors.Black);
-                    newUpdateTime[i].Text = bodys[i * 12 + 8].Split('>')[1].Split('<')[0];
+                    newUpdateTime.Height = 20;
+                    newUpdateTime.FontSize = 10;
+                    newUpdateTime.TextAlignment = TextAlignment.Center;
+                    newUpdateTime.VerticalAlignment = VerticalAlignment.Bottom;
+                    newUpdateTime.Foreground = new SolidColorBrush(Colors.Black);
+                    newUpdateTime.Text = bodys[i * 12 + 8].Split('>')[1].Split('<')[0];
                 }
-                newUpdate[i].Children.Add(newUpdateImage[i]);
-                newUpdate[i].Children.Add(newUpdateText[i]);
-                newUpdate[i].Children.Add(newUpdateTime[i]);
-                updateview.Items.Add(newUpdate[i]);
+                newUpdate.Children.Add(newUpdateImage);
+                newUpdate.Children.Add(newUpdateText);
+                newUpdate.Children.Add(newUpdateTime);
+                updateview.Items.Add(newUpdate);
             }
         }
         
@@ -633,7 +560,7 @@ namespace 酷安_UWP
             var m = SearchText.Margin;
             m.Left = 45;
             SearchText.Margin = m;
-            SearchBack.Visibility = Visibility.Visible;
+            SearchBox.Visibility = Visibility.Visible;
         }
 
         private void SearchText_KeyUp(object sender, Windows.UI.Xaml.Input.KeyRoutedEventArgs e)

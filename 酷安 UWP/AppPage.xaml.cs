@@ -74,10 +74,12 @@ namespace 酷安_UWP
             for (int i = 0; i < imagearray.Length - 1; i++)
             {
                 String imageurl = imagearray[i + 1].Split('"')[1];
-                Image newImage = new Image();
-                newImage.Height = 100;
-                //获得图片
-                newImage.Source = new BitmapImage(new Uri(imageurl, UriKind.RelativeOrAbsolute));
+                Image newImage = new Image
+                {
+                    Height = 100,
+                    //获得图片
+                    Source = new BitmapImage(new Uri(imageurl, UriKind.RelativeOrAbsolute))
+                };
                 //添加到缩略视图
                 ScreenShotView.Items.Add(newImage);
             }
@@ -86,9 +88,11 @@ namespace 酷安_UWP
             for (int i = 0; i < imagearray.Length - 1; i++)
             {
                 String imageurl = imagearray[i + 1].Split('"')[1];
-                Image newImage = new Image();
-                //获得图片
-                newImage.Source = new BitmapImage(new Uri(imageurl, UriKind.RelativeOrAbsolute));
+                Image newImage = new Image
+                {
+                    //获得图片
+                    Source = new BitmapImage(new Uri(imageurl, UriKind.RelativeOrAbsolute))
+                };
                 //添加到视图
                 ScreenShotFlipView.Items.Add(newImage);
             }
