@@ -26,13 +26,13 @@ namespace 酷安_UWP
         private async void Page_Loaded(object sender, RoutedEventArgs e)
         {
             this.Tag = MainPage.applink;
-            LaunchAppViewLoad(await WebMessage.GetMessage(Tag.ToString()));
+            LaunchAppViewLoad(await Web.GetHttp(Tag.ToString()));
         }
         private async void LaunchAppViewLoad(String str)
         {
-            try { jstr = WebMessage.ReplaceHtml(Regex.Split(Regex.Split(Regex.Split(str, "应用简介</p>")[1], @"<div class=""apk_left_title_info"">")[1], "</div>")[0].Trim()); } catch (Exception e) { }
-            try { vmstr = WebMessage.ReplaceHtml(Regex.Split(Regex.Split(str, @"<p class=""apk_left_title_info"">")[2], "</p>")[0].Replace("<br />", "").Replace("<br/>", "").Trim()); } catch (Exception e) { }
-            try { dstr = WebMessage.ReplaceHtml(Regex.Split(Regex.Split(str, @"<p class=""apk_left_title_info"">")[1], "</p>")[0].Replace("<br />", "").Replace("<br/>", "").Trim()); } catch (Exception e) { }
+            try { jstr = Web.ReplaceHtml(Regex.Split(Regex.Split(Regex.Split(str, "应用简介</p>")[1], @"<div class=""apk_left_title_info"">")[1], "</div>")[0].Trim()); } catch (Exception e) { }
+            try { vmstr = Web.ReplaceHtml(Regex.Split(Regex.Split(str, @"<p class=""apk_left_title_info"">")[2], "</p>")[0].Replace("<br />", "").Replace("<br/>", "").Trim()); } catch (Exception e) { }
+            try { dstr = Web.ReplaceHtml(Regex.Split(Regex.Split(str, @"<p class=""apk_left_title_info"">")[1], "</p>")[0].Replace("<br />", "").Replace("<br/>", "").Trim()); } catch (Exception e) { }
             vstr = Regex.Split(str, @"<p class=""detail_app_title"">")[1].Split('>')[1].Split('<')[0].Trim();
             mstr = Regex.Split(str, @"<p class=""apk_topba_message"">")[1].Split('<')[0].Trim().Replace("\n", "").Replace(" ", "");
             nstr = Regex.Split(str, @"<p class=""detail_app_title"">")[1].Split('<')[0].Trim();
@@ -134,10 +134,10 @@ namespace 酷安_UWP
 
 
             //获取开发者
-            String knstr = WebMessage.ReplaceHtml(Regex.Split(Regex.Split(str, "开发者名称：")[1], "</p>")[0]);
+            String knstr = Web.ReplaceHtml(Regex.Split(Regex.Split(str, "开发者名称：")[1], "</p>")[0]);
             try {
                 AppKNText.Text = knstr;
-                AppKImage.Source = new BitmapImage(new Uri(await WebMessage.GetCoolApkUserFace(knstr), UriKind.RelativeOrAbsolute));
+                AppKImage.Source = new BitmapImage(new Uri(await CoolApkSDK.GetCoolApkUserFace(knstr), UriKind.RelativeOrAbsolute));
             } catch (Exception e)
             {
                 KPanel.Visibility = Visibility.Collapsed;

@@ -9,6 +9,7 @@
         <SolidColorBrush x:Key="CoolApk_Theme" Color="#4CAF50"/>
         <SolidColorBrush x:Key="CoolApk_Theme_Back" Color="#FFFFFF"/>
         <SolidColorBrush x:Key="CoolApk_Theme_Fore" Color="#000000"/>
+        <SolidColorBrush x:Key="CoolApk_Bar" Color="#EE000000"/>
         <Color x:Key="CoolApk_Back">#FFFFFF</Color>
         <Color x:Key="CoolApk_Fore">#000000</Color>
         <Color x:Key="CoolApk_Begin">#4C4CAF50</Color>
@@ -103,7 +104,7 @@
         <Setter Property="Foreground" Value="{StaticResource PivotHeaderForegroundUnselectedBrush}" />
         <!-- original value {ThemeResource SystemControlForegroundBaseMediumBrush} -->
         <Setter Property="Padding" Value="{ThemeResource PivotHeaderItemMargin}" />
-        <Setter Property="Height" Value="48" />
+        <Setter Property="Height" Value="50" />
         <Setter Property="VerticalContentAlignment" Value="Center" />
         <Setter Property="IsTabStop" Value="False" />
         <Setter Property="Template">
@@ -114,7 +115,7 @@
                             <Style x:Key="BaseContentPresenterStyle" TargetType="ContentPresenter">
                                 <Setter Property="FontFamily" Value="Segoe UI" />
                                 <Setter Property="FontWeight" Value="SemiBold" />
-                                <Setter Property="FontSize" Value="15" />
+                                <Setter Property="FontSize" Value="{ThemeResource PivotHeaderItemFontSize}" />
                                 <Setter Property="TextWrapping" Value="Wrap" />
                                 <Setter Property="LineStackingStrategy" Value="MaxHeight" />
                                 <Setter Property="TextLineBounds" Value="Full" />
@@ -223,6 +224,7 @@
             </Setter.Value>
         </Setter>
         </Style>
+        
         <Style TargetType="ScrollBar">
 
         <Setter Property="MinWidth" Value="5" />
@@ -605,7 +607,7 @@
 
                             <ControlTemplate x:Key="VerticalThumbTemplate" TargetType="Thumb">
 
-                                <Rectangle x:Name="ThumbVisual" Fill="{ThemeResource CoolApk_Theme}">
+                                <Rectangle x:Name="ThumbVisual" Fill="{ThemeResource CoolApk_Bar}">
 
                                     <VisualStateManager.VisualStateGroups>
 
@@ -621,7 +623,7 @@
 
                                  Storyboard.TargetProperty="Fill">
 
-                                                        <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource CoolApk_Theme}" />
+                                                        <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource CoolApk_Bar}" />
 
                                                     </ObjectAnimationUsingKeyFrames>
 
@@ -645,7 +647,7 @@
 
                                  Storyboard.TargetProperty="Fill">
 
-                                                        <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource CoolApk_Theme}" />
+                                                        <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource CoolApk_Bar}" />
 
                                                     </ObjectAnimationUsingKeyFrames>
 
@@ -681,7 +683,7 @@
 
                             <ControlTemplate x:Key="HorizontalThumbTemplate" TargetType="Thumb">
 
-                                <Rectangle x:Name="ThumbVisual" Fill="{ThemeResource CoolApk_Theme}">
+                                <Rectangle x:Name="ThumbVisual" Fill="{ThemeResource CoolApk_Bar}">
 
                                     <VisualStateManager.VisualStateGroups>
 
@@ -697,7 +699,7 @@
 
                                  Storyboard.TargetProperty="Fill">
 
-                                                        <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource CoolApk_Theme}" />
+                                                        <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource CoolApk_Bar}" />
 
                                                     </ObjectAnimationUsingKeyFrames>
 
@@ -721,7 +723,7 @@
 
                                  Storyboard.TargetProperty="Fill">
 
-                                                        <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource CoolApk_Theme}" />
+                                                        <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource CoolApk_Bar}" />
 
                                                     </ObjectAnimationUsingKeyFrames>
 
@@ -949,7 +951,7 @@
 
                         StrokeThickness="{ThemeResource ScrollBarTrackBorderThemeThickness}"
 
-                        Fill="{ThemeResource CoolApk_Theme}"
+                        Fill="{ThemeResource CoolApk_Bar}"
 
                         Stroke="{ThemeResource SystemControlForegroundTransparentBrush}" />
 
@@ -1043,7 +1045,7 @@
 
                   HorizontalAlignment="Left"
 
-                  Background="{ThemeResource CoolApk_Theme}"
+                  Background="{ThemeResource CoolApk_Bar}"
 
                   BorderThickness="0"
 
@@ -1081,7 +1083,7 @@
 
                         Fill="Transparent"
 
-                        Stroke="{ThemeResource CoolApk_Theme}" />
+                        Stroke="{ThemeResource CoolApk_Bar}" />
 
                             <RepeatButton x:Name="VerticalSmallDecrease"
 
@@ -1147,7 +1149,7 @@
 
                         <Grid x:Name="VerticalPanningRoot" MinHeight="24">
 
-                            <Border x:Name="VerticalPanningThumb"  VerticalAlignment="Top" HorizontalAlignment="Right" Background="{ThemeResource CoolApk_Theme}" BorderThickness="0" Width="2" MinHeight="32" Margin="2,0,2,0"/>
+                            <Border x:Name="VerticalPanningThumb"  VerticalAlignment="Top" HorizontalAlignment="Right" Background="{ThemeResource CoolApk_Bar}" BorderThickness="0" Width="2" MinHeight="32" Margin="2,0,2,0"/>
 
                         </Grid>
 

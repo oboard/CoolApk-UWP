@@ -32,11 +32,14 @@ namespace 酷安_UWP
         public static ColumnDefinition _dcd, _lcd;
 
         //App链接
-        public static String applink = "", searchlink = "";
+        public static String applink = "", search = "";
 
         Color CoolColor = ((SolidColorBrush)Application.Current.Resources["CoolApk_Theme"]).Color;
         Color CoolForeColor = ((SolidColorBrush)Application.Current.Resources["CoolApk_Theme_Fore"]).Color;
-        Color CoolBackColor = Colors.White;
+        Color CoolForeInactiveColor = Color.FromArgb(255, 50, 50, 50);
+        Color CoolBackPressedColor = Color.FromArgb(255, 200, 200, 200);
+        Color CoolBackHoverColor = Color.FromArgb(255, 255, 255, 255);
+        Color CoolBackColor = Color.FromArgb(255, 230, 230, 230);
         //Color.FromArgb(255, 72, 174, 76);
 
         public MainPage()
@@ -59,28 +62,26 @@ namespace 酷安_UWP
 
                 // inactive
                 view.InactiveBackgroundColor = CoolBackColor;
-                view.InactiveForegroundColor = CoolForeColor;
+                view.InactiveForegroundColor = CoolForeInactiveColor;
 
                 // button
                 view.ButtonBackgroundColor = CoolBackColor;
                 view.ButtonForegroundColor = CoolForeColor;
 
-                view.ButtonHoverBackgroundColor = CoolBackColor;
+                view.ButtonHoverBackgroundColor = CoolBackHoverColor;
                 view.ButtonHoverForegroundColor = CoolForeColor;
 
-                view.ButtonPressedBackgroundColor = CoolBackColor;
+                view.ButtonPressedBackgroundColor = CoolBackPressedColor;
                 view.ButtonPressedForegroundColor = CoolForeColor;
 
                 view.ButtonInactiveBackgroundColor = CoolBackColor;
-                view.ButtonInactiveForegroundColor = CoolForeColor;
+                view.ButtonInactiveForegroundColor = CoolForeInactiveColor;
 
                 //标题栏返回按钮事件注册
                 Windows.UI.Core.SystemNavigationManager.GetForCurrentView().BackRequested += App_BackRequested;
             }
             _ViewFrame = ViewFrame;
             _ViewFrameS = ViewFrameS;
-            _User_Name = User_Name;
-            _User_Face = User_Face;
             _dcd = dcd;
 
             LeftButton1.Foreground = new SolidColorBrush(CoolColor);
@@ -101,29 +102,12 @@ namespace 酷安_UWP
 
         private async void Page_Loaded(object sender, RoutedEventArgs e)
         {
-            // 绑定到匿名类型上
-            //PART_ListViewStateName.ItemsSource = new[] { new { Text = "应用" }, new { Text = "游戏" }};
-
-            //本地信息
-            ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
-            try
-            {
-                if (localSettings.Values["login"].ToString().Contains("1"))
-                {
-                    _User_Name.Text = localSettings.Values["name"].ToString();
-                    _User_Face.Source = new BitmapImage(new Uri(localSettings.Values["face"].ToString(), UriKind.RelativeOrAbsolute));
-                }
-            }
-            catch (Exception ex)
-            {
-                localSettings.Values["login"] = "0";
-            }
             //网络信息
-            await LoadNewUpdate(await WebMessage.GetMessage("https://www.coolapk.com/"));
-            await LoadHotApp(await WebMessage.GetMessage("https://www.coolapk.com/apk/recommend"));
-            await LoadDeveloperApp(await WebMessage.GetMessage("https://www.coolapk.com/apk/developer"));
-            await LoadHotGame(await WebMessage.GetMessage("https://www.coolapk.com/game/"));
-            await LoadHotGame(await WebMessage.GetMessage("https://www.coolapk.com/game?p=2"));
+            await LoadNewUpdate(await Web.GetHttp("https://www.coolapk.com/"));
+            await LoadHotApp(await Web.GetHttp("https://www.coolapk.com/apk/recommend"));
+            await LoadDeveloperApp(await Web.GetHttp("https://www.coolapk.com/apk/developer"));
+            await LoadHotGame(await Web.GetHttp("https://www.coolapk.com/game/"));
+            await LoadHotGame(await Web.GetHttp("https://www.coolapk.com/game?p=2"));
         }
 
         private void App_BackRequested(object sender, BackRequestedEventArgs e)
@@ -148,11 +132,6 @@ namespace 酷安_UWP
         }
         private void App_Back(object sender, RoutedEventArgs e)
         {
-            var m = SearchText.Margin;
-            m.Left = 0;
-            SearchText.Margin = m;
-            SearchBox.Visibility = Visibility.Collapsed;
-
             App_Back();
         }
 
@@ -180,7 +159,7 @@ namespace 酷安_UWP
                     {
                         newI.Source = new BitmapImage(new Uri(Regex.Split(bod, "src=")[i + 1].Split('"')[1], UriKind.RelativeOrAbsolute));
                     }
-                    catch (Exception e)
+                    catch (Exception)
                     {
                     }
                     //                    await WebMessage.DownloadImage(bodys[(i + 1) * 2]);
@@ -231,7 +210,7 @@ namespace 酷安_UWP
                     {
                         newImage.Source = new BitmapImage(new Uri(bodys[i * 15 + 6 + 3].Split('"')[3], UriKind.RelativeOrAbsolute));
                     }
-                    catch (Exception e)
+                    catch (Exception)
                     {
                     }
                 }
@@ -245,7 +224,7 @@ namespace 酷安_UWP
                     newText1.VerticalAlignment = VerticalAlignment.Top;
                     newText1.Foreground = new SolidColorBrush(Colors.Black);
                     newText1.TextWrapping = TextWrapping.Wrap;
-                    newText1.Text = WebMessage.ReplaceHtml(bodys[i * 15 + 6 + 5].Split('>')[1].Split('<')[0]);
+                    newText1.Text = Web.ReplaceHtml(bodys[i * 15 + 6 + 5].Split('>')[1].Split('<')[0]);
                 }
                 TextBlock newText2 = new TextBlock();
                 {
@@ -257,7 +236,7 @@ namespace 酷安_UWP
                     newText2.VerticalAlignment = VerticalAlignment.Top;
                     newText2.Foreground = new SolidColorBrush(Color.FromArgb(60, 0, 0, 0));
                     newText2.TextWrapping = TextWrapping.Wrap;
-                    newText2.Text = WebMessage.ReplaceHtml(bodys[i * 15 + 6 + 7].Split('>')[1].Split('<')[0]);
+                    newText2.Text = Web.ReplaceHtml(bodys[i * 15 + 6 + 7].Split('>')[1].Split('<')[0]);
                 }
                 newGrid.Children.Add(newImage);
                 newGrid.Children.Add(newText1);
@@ -290,7 +269,7 @@ namespace 酷安_UWP
                         {
                             hotAppImage.Source = new BitmapImage(new Uri(bodys[i * 15 + 5 + 3].Split('"')[3], UriKind.RelativeOrAbsolute));
                         }
-                        catch (Exception e)
+                        catch (Exception)
                         {
                         }
                         //                    await WebMessage.DownloadImage(bodys[(i + 1) * 2]);
@@ -319,7 +298,7 @@ namespace 酷安_UWP
                     hotApp.Children.Add(hotAppName);
                     hotview.Items.Add(hotApp);
                 }
-                catch (Exception e)
+                catch (Exception)
                 {
 
                 }
@@ -349,7 +328,7 @@ namespace 酷安_UWP
                     {
                         developerAppImage.Source = new BitmapImage(new Uri(bodys[i * 15 + 4 + 3].Split('"')[3], UriKind.RelativeOrAbsolute));
                     }
-                    catch (Exception e)
+                    catch (Exception)
                     {
                     }
                     //                    await WebMessage.DownloadImage(bodys[(i + 1) * 2]);
@@ -407,7 +386,7 @@ namespace 酷安_UWP
                     {
                         newImage.Source = new BitmapImage(new Uri(bodys[i * 33 + 3 + 2].Split('"')[7], UriKind.RelativeOrAbsolute));
                     }
-                    catch (Exception e)
+                    catch (Exception)
                     {
                     }
                 }
@@ -489,7 +468,7 @@ namespace 酷安_UWP
                     {
                         newUpdateImage.Source = new BitmapImage(new Uri(bodys[i * 12 + 4].Split('"')[1], UriKind.RelativeOrAbsolute));
                     }
-                    catch (Exception e)
+                    catch (Exception)
                     {
                     }
                     //                    await WebMessage.DownloadImage(bodys[(i + 1) * 2]);
@@ -541,34 +520,12 @@ namespace 酷安_UWP
             
         }
 
-        private void Login_Click(object sender, RoutedEventArgs e)
-        {
-            // OpenAppPage("https://www.coolapk.com/apk/" + ttt.Text);
-            _ViewFrame.Navigate(typeof(LoginPage), new LoginPage());
-            SystemNavigationManager.GetForCurrentView().AppViewBackButtonVisibility = AppViewBackButtonVisibility.Visible;
-            _ViewFrame.Visibility = Visibility.Visible;
-        }
-
         private void SearchButton_Click(object sender, RoutedEventArgs e)
         {
             SearchPage newPage = new SearchPage();
-            searchlink = "https://www.coolapk.com/search?q=" + SearchText.Text;
             ViewFrameS.Navigate(typeof(SearchPage), newPage);
             SystemNavigationManager.GetForCurrentView().AppViewBackButtonVisibility = AppViewBackButtonVisibility.Visible;
             ViewFrameS.Visibility = Visibility.Visible;
-
-            var m = SearchText.Margin;
-            m.Left = 45;
-            SearchText.Margin = m;
-            SearchBox.Visibility = Visibility.Visible;
-        }
-
-        private void SearchText_KeyUp(object sender, Windows.UI.Xaml.Input.KeyRoutedEventArgs e)
-        {
-            if (e.Key == Windows.System.VirtualKey.Enter)
-            {
-                SearchButton_Click(null, null);
-            }
         }
 
         public static void OpenAppPage(String link)
@@ -586,7 +543,7 @@ namespace 酷安_UWP
             //Hide All
             P1.Visibility = Visibility.Collapsed;
             P2.Visibility = Visibility.Collapsed;
-            P3.Visibility = Visibility.Collapsed;
+            _ViewFrameS.Visibility = Visibility.Collapsed;
             LeftButton1.Foreground = new SolidColorBrush(Colors.Black);
             LeftButton2.Foreground = new SolidColorBrush(Colors.Black);
             LeftButton3.Foreground = new SolidColorBrush(Colors.Black);
@@ -618,7 +575,8 @@ namespace 酷安_UWP
             {
                 LeftButton3.Foreground = new SolidColorBrush(CoolColor);
                 BottomBar3.Foreground = new SolidColorBrush(CoolColor);
-                P3.Visibility = Visibility.Visible;
+                _ViewFrameS.Navigate(typeof(MyPage), new MyPage());
+                _ViewFrameS.Visibility = Visibility.Visible;
             }
         }
 
@@ -629,17 +587,8 @@ namespace 酷安_UWP
 
         private void Classify_Click(object sender, RoutedEventArgs e)
         {
-            SearchPage newPage = new SearchPage();
-            SearchText.Text = ((Button)sender).Content.ToString();
-            searchlink = "https://www.coolapk.com/search?q=" + SearchText.Text;
-            ViewFrameS.Navigate(typeof(SearchPage), newPage);
-            SystemNavigationManager.GetForCurrentView().AppViewBackButtonVisibility = AppViewBackButtonVisibility.Visible;
-            ViewFrameS.Visibility = Visibility.Visible;
-
-            var m = SearchText.Margin;
-            m.Left = 45;
-            SearchText.Margin = m;
-            SearchBack.Visibility = Visibility.Visible;
+            search = ((Button)sender).Content.ToString();
+            SearchButton_Click(null, null);
         }
     }
 }

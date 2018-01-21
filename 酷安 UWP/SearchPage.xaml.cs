@@ -21,16 +21,21 @@ namespace 酷安_UWP
         }
         private async void Page_Loaded(object sender, RoutedEventArgs e)
         {
-            this.Tag = MainPage.searchlink;
+            this.Tag = MainPage.search;
+            await ToSearch(Tag.ToString());
+        }
+
+        private async Task ToSearch(String str)
+        {
             try
             {
-                SearchLoad(await WebMessage.GetMessage(Tag.ToString()));
+                SearchLoad(await Web.GetHttp("https://www.coolapk.com/search?q=" + str));
             }
-            catch(Exception ex)
+            catch(Exception)
             {
-
             }
         }
+
         private void SearchLoad(String str)
         {
             String body = Regex.Split(str, @"<div class=""left_nav"">")[1];
@@ -41,65 +46,54 @@ namespace 酷安_UWP
             String[] bodys = Regex.Split(body, @"\n");
             for (int i = 0; i < bodylist.Length - 1; i++)
             {
-                Grid newGrid = new Grid();
+                Grid newGrid = new Grid
                 {
-                    newGrid.Height = 80;
-                    newGrid.Tag = bodys[i * 15 + 5].Split('"')[1];
-                }
+                    Height = 80,
+                    Tag = bodys[i * 15 + 5].Split('"')[1]
+                };
+
                 Image newImage = new Image();
+                try
                 {
-                    var margin = newImage.Margin;
-                    margin.Left = 20;
-                    margin.Top = 20;
-                    margin.Right = 0;
-                    margin.Bottom = 20;
-                    newImage.Margin = margin;
-                    newImage.Width = 40;
-                    newImage.HorizontalAlignment = HorizontalAlignment.Left;
-                    try
+                    newImage = new Image
                     {
-                        newImage.Source = new BitmapImage(new Uri(bodys[i * 15 + 5 + 3].Split('"')[3], UriKind.RelativeOrAbsolute));
-                    }
-                    catch (Exception e)
-                    {
-                    }
+                        Margin = new Thickness(20, 20, 0, 20),
+                        Width = 40,
+                        HorizontalAlignment = HorizontalAlignment.Left,
+                        Source = new BitmapImage(new Uri(bodys[i * 15 + 5 + 3].Split('"')[3], UriKind.RelativeOrAbsolute))
+                    };
                 }
-                TextBlock newText1 = new TextBlock();
+                catch (Exception)
                 {
-                    var margin = newText1.Margin;
-                    margin.Left = 80;
-                    margin.Top = 10;
-                    newText1.Margin = margin;
-                    newText1.HorizontalAlignment = HorizontalAlignment.Left;
-                    newText1.VerticalAlignment = VerticalAlignment.Top;
-                    newText1.Foreground = new SolidColorBrush(Colors.Black);
-                    newText1.TextWrapping = TextWrapping.Wrap;
-                    newText1.Text = bodys[i * 15 + 5 + 5].Split('>')[1].Split('<')[0];
                 }
-                TextBlock newText2 = new TextBlock();
+
+                TextBlock newText1 = new TextBlock
                 {
-                    var margin = newText2.Margin;
-                    margin.Left = 80;
-                    margin.Top = 30;
-                    newText2.Margin = margin;
-                    newText2.HorizontalAlignment = HorizontalAlignment.Left;
-                    newText2.VerticalAlignment = VerticalAlignment.Top;
-                    newText2.Foreground = new SolidColorBrush(Color.FromArgb(60,0,0,0));
-                    newText2.TextWrapping = TextWrapping.Wrap;
-                    newText2.Text = bodys[i * 15 + 5 + 6].Split('>')[1].Split('<')[0];
-                }
-                TextBlock newText3 = new TextBlock();
+                    Margin = new Thickness(80, 10, 0, 0),
+                    HorizontalAlignment = HorizontalAlignment.Left,
+                    VerticalAlignment = VerticalAlignment.Top,
+                    Foreground = new SolidColorBrush(Colors.Black),
+                    TextWrapping = TextWrapping.Wrap,
+                    Text = bodys[i * 15 + 5 + 5].Split('>')[1].Split('<')[0]
+                };
+                TextBlock newText2 = new TextBlock
                 {
-                    var margin = newText3.Margin;
-                    margin.Left = 80;
-                    margin.Top = 50;
-                    newText3.Margin = margin;
-                    newText3.HorizontalAlignment = HorizontalAlignment.Left;
-                    newText3.VerticalAlignment = VerticalAlignment.Top;
-                    newText3.Foreground = new SolidColorBrush(Color.FromArgb(60, 0, 0, 0));
-                    newText3.TextWrapping = TextWrapping.Wrap;
-                    newText3.Text = bodys[i * 15 + 5 + 7].Split('>')[1].Split('<')[0];
-                }
+                    Margin = new Thickness(80, 30, 0, 0),
+                    HorizontalAlignment = HorizontalAlignment.Left,
+                    VerticalAlignment = VerticalAlignment.Top,
+                    Foreground = new SolidColorBrush(Color.FromArgb(60,0,0,0)),
+                    TextWrapping = TextWrapping.Wrap,
+                    Text = bodys[i * 15 + 5 + 6].Split('>')[1].Split('<')[0]
+                };
+                TextBlock newText3 = new TextBlock
+                {
+                    Margin = new Thickness(80, 50, 0, 0),
+                    HorizontalAlignment = HorizontalAlignment.Left,
+                    VerticalAlignment = VerticalAlignment.Top,
+                    Foreground = new SolidColorBrush(Color.FromArgb(60, 0, 0, 0)),
+                    TextWrapping = TextWrapping.Wrap,
+                    Text = bodys[i * 15 + 5 + 7].Split('>')[1].Split('<')[0]
+                };
                 newGrid.Children.Add(newImage);
                 newGrid.Children.Add(newText1);
                 newGrid.Children.Add(newText2);
@@ -114,6 +108,24 @@ namespace 酷安_UWP
             if (SearchList.SelectedIndex == -1) return;
             MainPage.OpenAppPage("https://www.coolapk.com" + ((Grid)SearchList.Items[SearchList.SelectedIndex]).Tag.ToString());
             SearchList.SelectedIndex = -1;
+        }
+
+
+        private void SearchText_KeyUp(object sender, Windows.UI.Xaml.Input.KeyRoutedEventArgs e)
+        {
+            if (e.Key == Windows.System.VirtualKey.Enter)
+                SearchButton_Click(null, null);
+        }
+
+
+        private async void SearchButton_Click(object sender, RoutedEventArgs e)
+        {
+            await ToSearch(SearchText.Text);
+        }
+
+        private void SearchBack_Click(object sender, RoutedEventArgs e)
+        {
+            MainPage.App_Back();
         }
     }
 

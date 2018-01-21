@@ -11,9 +11,10 @@ using Windows.Networking.BackgroundTransfer;
 
 namespace 酷安_UWP
 {
-    class WebMessage
+    class Web
     {
-        public static async Task<string> GetMessage(string url)
+
+        public static async Task<string> GetHttp(string url)
         {
             try
             {
@@ -24,6 +25,7 @@ namespace 酷安_UWP
                 return "";
             }
         }
+
         public static String ReplaceHtml(String str)
         {
             //换行和段落
@@ -43,13 +45,6 @@ namespace 酷安_UWP
             }
             return s;
         }
-
-        public static async Task<string> GetCoolApkUserFace(String UName)
-        {
-            String body = await GetMessage("https://www.coolapk.com/u/" + UName);
-            body = Regex.Split(body, @"<div class=""msg_box"">")[1];
-            body = Regex.Split(body, @"src=""")[1];
-            return Regex.Split(body, @"""")[0];
-        }
+        
     }
 }

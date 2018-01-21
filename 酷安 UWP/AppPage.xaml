@@ -90,6 +90,15 @@
                 </Button.Flyout>
             </Button>
         </Grid>
+
+        <Rectangle Margin="0,50,0,0" Height="5" VerticalAlignment="Top">
+            <Rectangle.Fill>
+                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                    <GradientStop Color="#22000000"/>
+                    <GradientStop Offset="1"/>
+                </LinearGradientBrush>
+            </Rectangle.Fill>
+        </Rectangle>
         
         <FlipView Visibility="Collapsed" x:Name="ScreenShotFlipView" />
         <Button x:Name="CloseFlip" Visibility="Collapsed" Click="CloseFlip_Click"  HorizontalAlignment="Left" VerticalAlignment="Top" Width="50" Foreground="White" Height="50">

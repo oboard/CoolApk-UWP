@@ -8,15 +8,26 @@
     Loaded="Page_Loaded"
     mc:Ignorable="d" >
 
-    <Grid Background="White">
-        <ListBox x:Name="SearchList" SelectionChanged="SearchList_SelectionChanged">
+    <Grid>
 
-        </ListBox>
+        <ListBox Margin="0,50,0,0" x:Name="SearchList" SelectionChanged="SearchList_SelectionChanged"/>
 
-        <Rectangle Height="5" VerticalAlignment="Top">
+        <Grid Height="50" VerticalAlignment="Top">
+            <Grid x:Name="SearchBox" Margin="5" Background="{StaticResource CoolApk_Theme_Back}" CornerRadius="5" Height="40" VerticalAlignment="Top">
+                <Button x:Name="SearchBack" Click="SearchBack_Click"  HorizontalAlignment="Left" VerticalAlignment="Stretch" Width="40" Background="#00000000">
+                    <SymbolIcon Foreground="{ThemeResource CoolApk_Theme_Fore}" Symbol="Back"/>
+                </Button>
+                <TextBox x:Name="SearchText" Padding="10" Background="#00000000" BorderBrush="#00000000" Foreground="{ThemeResource CoolApk_Theme_Fore}" SelectionHighlightColor="#CC969696" TextAlignment="Left" Margin="40,10,40,0" VerticalAlignment="Center" KeyUp="SearchText_KeyUp"/>
+            </Grid>
+            <Button Click="SearchButton_Click" Margin="5" HorizontalAlignment="Right" VerticalAlignment="Stretch" Width="40" Background="#00000000">
+                <SymbolIcon Foreground="{ThemeResource CoolApk_Theme_Fore}" Symbol="Zoom"/>
+            </Button>
+        </Grid>
+        
+        <Rectangle Margin="0,50,0,0" Height="5" VerticalAlignment="Top">
             <Rectangle.Fill>
                 <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                    <GradientStop Color="#11000000" Offset="0"/>
+                    <GradientStop Color="#22000000"/>
                     <GradientStop Offset="1"/>
                 </LinearGradientBrush>
             </Rectangle.Fill>
