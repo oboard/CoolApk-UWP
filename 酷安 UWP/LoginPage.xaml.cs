@@ -20,7 +20,7 @@ namespace 酷安_UWP
             this.InitializeComponent();
             
         }
-        private async void Page_Loaded(object sender, RoutedEventArgs e)
+        private void Page_Loaded(object sender, RoutedEventArgs e)
         {
             this.Tag = MainPage.applink;
         }
@@ -38,7 +38,7 @@ namespace 酷安_UWP
                     s = s.Replace("</a>", "");
                 }
             } 
-            catch(Exception e)
+            catch(Exception)
             {
 
             }
@@ -78,7 +78,7 @@ namespace 酷安_UWP
                     source2 = html;
                 }
             }
-            catch (Exception e)
+            catch (Exception)
             {
 
             }

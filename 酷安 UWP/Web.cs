@@ -20,7 +20,7 @@ namespace 酷安_UWP
             {
                 return await new HttpClient().GetStringAsync(new Uri(url));
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 return "";
             }
@@ -39,7 +39,7 @@ namespace 酷安_UWP
                     s = s.Replace("</a>", "");
                 }
             }
-            catch (Exception e)
+            catch (Exception)
             {
 
             }

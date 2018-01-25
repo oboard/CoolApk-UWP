@@ -29,6 +29,7 @@ namespace 酷安_UWP
         {
             try
             {
+                SearchList.Items.Clear();
                 SearchLoad(await Web.GetHttp("https://www.coolapk.com/search?q=" + str));
             }
             catch(Exception)

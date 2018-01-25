@@ -32,6 +32,12 @@ namespace 酷安_UWP
             MainPage._User_Name = User_Name;
             MainPage._User_Face = User_Face;
 
+            //加载用户信息
+            LoadUserProfile();
+        }
+
+        public async void LoadUserProfile()
+        {
             //本地信息
             ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
             try
@@ -46,6 +52,15 @@ namespace 酷安_UWP
             {
                 localSettings.Values["login"] = "0";
             }
+
+            User user = await CoolApkSDK.GetUserProfileByName(localSettings.Values["name"].ToString());
+            if (user != null)
+            {
+                dt.Text = user.feeds.ToString();
+                dt.Text = user.follow.ToString();
+                fs.Text = user.fans.ToString();
+            }
+
         }
 
         private void Login_Click(object sender, RoutedEventArgs e)

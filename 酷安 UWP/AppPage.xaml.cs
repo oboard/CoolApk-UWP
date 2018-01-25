@@ -30,9 +30,9 @@ namespace 酷安_UWP
         }
         private async void LaunchAppViewLoad(String str)
         {
-            try { jstr = Web.ReplaceHtml(Regex.Split(Regex.Split(Regex.Split(str, "应用简介</p>")[1], @"<div class=""apk_left_title_info"">")[1], "</div>")[0].Trim()); } catch (Exception e) { }
-            try { vmstr = Web.ReplaceHtml(Regex.Split(Regex.Split(str, @"<p class=""apk_left_title_info"">")[2], "</p>")[0].Replace("<br />", "").Replace("<br/>", "").Trim()); } catch (Exception e) { }
-            try { dstr = Web.ReplaceHtml(Regex.Split(Regex.Split(str, @"<p class=""apk_left_title_info"">")[1], "</p>")[0].Replace("<br />", "").Replace("<br/>", "").Trim()); } catch (Exception e) { }
+            try { jstr = Web.ReplaceHtml(Regex.Split(Regex.Split(Regex.Split(str, "应用简介</p>")[1], @"<div class=""apk_left_title_info"">")[1], "</div>")[0].Trim()); } catch (Exception) { }
+            try { vmstr = Web.ReplaceHtml(Regex.Split(Regex.Split(str, @"<p class=""apk_left_title_info"">")[2], "</p>")[0].Replace("<br />", "").Replace("<br/>", "").Trim()); } catch (Exception) { }
+            try { dstr = Web.ReplaceHtml(Regex.Split(Regex.Split(str, @"<p class=""apk_left_title_info"">")[1], "</p>")[0].Replace("<br />", "").Replace("<br/>", "").Trim()); } catch (Exception) { }
             vstr = Regex.Split(str, @"<p class=""detail_app_title"">")[1].Split('>')[1].Split('<')[0].Trim();
             mstr = Regex.Split(str, @"<p class=""apk_topba_message"">")[1].Split('<')[0].Trim().Replace("\n", "").Replace(" ", "");
             nstr = Regex.Split(str, @"<p class=""detail_app_title"">")[1].Split('<')[0].Trim();
@@ -138,7 +138,7 @@ namespace 酷安_UWP
             try {
                 AppKNText.Text = knstr;
                 AppKImage.Source = new BitmapImage(new Uri(await CoolApkSDK.GetCoolApkUserFace(knstr), UriKind.RelativeOrAbsolute));
-            } catch (Exception e)
+            } catch (Exception)
             {
                 KPanel.Visibility = Visibility.Collapsed;
             }
