@@ -57,7 +57,7 @@ namespace 酷安_UWP
             if (user != null)
             {
                 dt.Text = user.feeds.ToString();
-                dt.Text = user.follow.ToString();
+                gz.Text = user.follow.ToString();
                 fs.Text = user.fans.ToString();
             }
 

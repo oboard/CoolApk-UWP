@@ -557,26 +557,26 @@ namespace 酷安_UWP
             else
                 s = ((Button)sender).Tag.ToString();
             //Show
-            if (s.Equals("1"))
+            switch (s)
             {
-                LeftButton1.Foreground = new SolidColorBrush(CoolColor);
-                BottomBar1.Foreground = new SolidColorBrush(CoolColor);
-                P1.Visibility = Visibility.Visible;
-            }
-            else if (s.Equals("2"))
-            {
-                LeftButton2.Foreground = new SolidColorBrush(CoolColor);
-                BottomBar2.Foreground = new SolidColorBrush(CoolColor);
-                LoadDeveloper(LoginPage.source1, xl1);
-                LoadDeveloper(LoginPage.source2, xl2);
-                P2.Visibility = Visibility.Visible;
-            }
-            else if (s.Equals("3"))
-            {
-                LeftButton3.Foreground = new SolidColorBrush(CoolColor);
-                BottomBar3.Foreground = new SolidColorBrush(CoolColor);
-                _ViewFrameS.Navigate(typeof(MyPage), new MyPage());
-                _ViewFrameS.Visibility = Visibility.Visible;
+                case "1":
+                    LeftButton1.Foreground = new SolidColorBrush(CoolColor);
+                    BottomBar1.Foreground = new SolidColorBrush(CoolColor);
+                    P1.Visibility = Visibility.Visible;
+                    break;
+                case "2":
+                    LeftButton2.Foreground = new SolidColorBrush(CoolColor);
+                    BottomBar2.Foreground = new SolidColorBrush(CoolColor);
+                    LoadDeveloper(LoginPage.source1, xl1);
+                    LoadDeveloper(LoginPage.source2, xl2);
+                    P2.Visibility = Visibility.Visible;
+                    break;
+                case "3":
+                    LeftButton3.Foreground = new SolidColorBrush(CoolColor);
+                    BottomBar3.Foreground = new SolidColorBrush(CoolColor);
+                    _ViewFrameS.Navigate(typeof(MyPage), new MyPage());
+                    _ViewFrameS.Visibility = Visibility.Visible;
+                    break;
             }
         }
 

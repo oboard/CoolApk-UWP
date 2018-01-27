@@ -40,9 +40,9 @@ namespace 酷安_UWP
                 var mClient = new HttpClient();
                 mClient.DefaultRequestHeaders.Add("User-Agent", "Dalvik/2.1.0 (Linux; U; Android 7.1.1; Nexus 4 Build/LMY48T) (#Build; google; Nexus 4; LMY48T; 5.1.1) +CoolMarket/7.3");
                 mClient.DefaultRequestHeaders.Add("X-Requested-With", "XMLHttpRequest");
-                mClient.DefaultRequestHeaders.Add("X-Sdk-Int", "22");
+                mClient.DefaultRequestHeaders.Add("X-Sdk-Int", "25");
                 mClient.DefaultRequestHeaders.Add("X-Sdk-Locale", "zh-CN");
-                mClient.DefaultRequestHeaders.Add("X-App-Id", "coolmarket");
+                mClient.DefaultRequestHeaders.Add("X-App-Id", "com.coolapk.market");
                 mClient.DefaultRequestHeaders.Add("X-App-Token", await GetToken());
                 mClient.DefaultRequestHeaders.Add("X-App-Version", "7.3");
                 mClient.DefaultRequestHeaders.Add("X-App-Code", "1701135");
