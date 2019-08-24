@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Windows.UI;
@@ -32,7 +29,7 @@ namespace 酷安_UWP
                 SearchList.Items.Clear();
                 SearchLoad(await Web.GetHttp("https://www.coolapk.com/search?q=" + str));
             }
-            catch(Exception)
+            catch (Exception)
             {
             }
         }
@@ -82,7 +79,7 @@ namespace 酷安_UWP
                     Margin = new Thickness(80, 30, 0, 0),
                     HorizontalAlignment = HorizontalAlignment.Left,
                     VerticalAlignment = VerticalAlignment.Top,
-                    Foreground = new SolidColorBrush(Color.FromArgb(60,0,0,0)),
+                    Foreground = new SolidColorBrush(Color.FromArgb(60, 0, 0, 0)),
                     TextWrapping = TextWrapping.Wrap,
                     Text = bodys[i * 15 + 5 + 6].Split('>')[1].Split('<')[0]
                 };

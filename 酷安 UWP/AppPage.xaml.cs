@@ -1,12 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using Windows.ApplicationModel.DataTransfer;
-using Windows.Networking.BackgroundTransfer;
-using Windows.Storage;
 using Windows.System;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -16,7 +10,7 @@ namespace 酷安_UWP
 {
     public sealed partial class AppPage : Page
     {
-        String jstr = "", vmstr = "", dstr = "", vstr, mstr, nstr, iurl, vtstr, rstr, pstr,ddstr;
+        String jstr = "", vmstr = "", dstr = "", vstr, mstr, nstr, iurl, vtstr, rstr, pstr, ddstr;
 
         public AppPage()
         {
@@ -66,7 +60,7 @@ namespace 酷安_UWP
                 AppDText.Text = "";
             }
             if (dstr.Contains("更新时间") && dstr.Contains("ROM") && dstr.Contains("名称")) UPanel.Visibility = Visibility.Collapsed;
-            
+
 
             //加载截图！
             String images = Regex.Split(Regex.Split(str, @"<div class=""ex-screenshot-thumb-carousel"">")[1], "</div>")[0];
@@ -105,7 +99,8 @@ namespace 酷安_UWP
             AppPText.Text = pstr;
             //星星
             double rdob = Double.Parse(rstr);
-            if (rdob > 4.5) {
+            if (rdob > 4.5)
+            {
 
             }
             else if (rdob > 3.0)
@@ -135,10 +130,12 @@ namespace 酷安_UWP
 
             //获取开发者
             String knstr = Web.ReplaceHtml(Regex.Split(Regex.Split(str, "开发者名称：")[1], "</p>")[0]);
-            try {
+            try
+            {
                 AppKNText.Text = knstr;
                 AppKImage.Source = new BitmapImage(new Uri(await CoolApkSDK.GetCoolApkUserFace(knstr), UriKind.RelativeOrAbsolute));
-            } catch (Exception)
+            }
+            catch (Exception)
             {
                 KPanel.Visibility = Visibility.Collapsed;
             }

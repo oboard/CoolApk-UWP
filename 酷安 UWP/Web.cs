@@ -1,13 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.IO;
-using Windows.Web.Http;
-using Windows.Web.Http.Filters;
 using System.Text.RegularExpressions;
-using Windows.Networking.BackgroundTransfer;
+using System.Threading.Tasks;
+using Windows.Web.Http;
 
 namespace 酷安_UWP
 {
@@ -45,6 +39,6 @@ namespace 酷安_UWP
             }
             return s;
         }
-        
+
     }
 }

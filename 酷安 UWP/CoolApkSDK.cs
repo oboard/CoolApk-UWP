@@ -1,24 +1,78 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.IO;
-using Windows.Web.Http;
-using Windows.Web.Http.Filters;
-using System.Text.RegularExpressions;
-using Windows.Networking.BackgroundTransfer;
-using Windows.Data.Json;
 using System.Collections;
+using System.Security.Cryptography;
+using System.Text;
+using System.Text.RegularExpressions;
+using System.Threading.Tasks;
+using Windows.Data.Json;
+using Windows.Web.Http;
 
 namespace 酷安_UWP
 {
     class CoolApkSDK
     {
-        public static async Task<string> GetToken()
+
+
+        public static string GetToken()
         {
-            return await Web.GetHttp("http://l.w568w.ml/api/token.php");
+            //return await Web.GetHttp("http://l.w568w.ml/api/token.php")
+
+            String DEVICE_ID = "8513efac-09ea-3709-b214-95b366f1a185";
+            string t = DateTime.Now.Millisecond.ToString();
+            string hex_t = ToHex(t, "utf-8", false);
+            // 时间戳加密
+            UTF8Encoding utf8 = new UTF8Encoding();
+            Byte[] encodedBytes = utf8.GetBytes(t);
+            String decodedString = utf8.GetString(encodedBytes);
+            string md5_t = GetMD5(decodedString);
+            // 不知道什么鬼字符串拼接
+            string a = "token://com.coolapk.market/c67ef5943784d09750dcfbb31020f0ab?{}${}&com.coolapk.market";
+            a = String.Format(a, md5_t, DEVICE_ID);
+            // 不知道什么鬼字符串拼接 后的字符串再次加密
+
+            encodedBytes = utf8.GetBytes(a);
+            decodedString = utf8.GetString(encodedBytes);
+            string md5_a = GetMD5(Convert.ToBase64String(Encoding.Default.GetBytes((decodedString))));
+            string token = String.Format(@"{}{}{}", md5_a, DEVICE_ID, hex_t);
+
+            // ==================================================
+            return token;
         }
+
+        public static string GetMD5(string myString)
+        {
+            MD5 md5 = new MD5CryptoServiceProvider();
+            byte[] fromData = System.Text.Encoding.Unicode.GetBytes(myString);
+            byte[] targetData = md5.ComputeHash(fromData);
+            string byte2String = null;
+            for (int i = 0; i < targetData.Length; i++)
+            {
+                byte2String += targetData[i].ToString("x");
+            }
+            return byte2String;
+        }
+
+        public static string ToHex(string s, string charset, bool fenge)
+        {
+            if ((s.Length % 2) != 0)
+            {
+                s += " ";//空格
+                         //throw new ArgumentException("s is not valid chinese string!");
+            }
+            System.Text.Encoding chs = System.Text.Encoding.GetEncoding(charset);
+            byte[] bytes = chs.GetBytes(s);
+            string str = "";
+            for (int i = 0; i < bytes.Length; i++)
+            {
+                str += string.Format("{0:X}", bytes[i]);
+                if (fenge && (i != bytes.Length - 1))
+                {
+                    str += string.Format("{0}", ",");
+                }
+            }
+            return str.ToLower();
+        }
+
 
         public static async Task<string> GetCoolApkMessage(string url)
         {
@@ -43,7 +97,7 @@ namespace 酷安_UWP
                 mClient.DefaultRequestHeaders.Add("X-Sdk-Int", "25");
                 mClient.DefaultRequestHeaders.Add("X-Sdk-Locale", "zh-CN");
                 mClient.DefaultRequestHeaders.Add("X-App-Id", "com.coolapk.market");
-                mClient.DefaultRequestHeaders.Add("X-App-Token", await GetToken());
+                mClient.DefaultRequestHeaders.Add("X-App-Token", GetToken());
                 mClient.DefaultRequestHeaders.Add("X-App-Version", "7.3");
                 mClient.DefaultRequestHeaders.Add("X-App-Code", "1701135");
                 mClient.DefaultRequestHeaders.Add("X-Api-Version", "7");

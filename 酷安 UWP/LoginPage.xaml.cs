@@ -1,12 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Media.Imaging;
 
 namespace 酷安_UWP
 {
@@ -18,7 +13,7 @@ namespace 酷安_UWP
         public LoginPage()
         {
             this.InitializeComponent();
-            
+
         }
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
@@ -37,8 +32,8 @@ namespace 酷安_UWP
                     s = s.Replace(@"<a href=""" + Regex.Split(Regex.Split(s, @"<a href=""")[1], @""">")[0] + @""">", "");
                     s = s.Replace("</a>", "");
                 }
-            } 
-            catch(Exception)
+            }
+            catch (Exception)
             {
 
             }

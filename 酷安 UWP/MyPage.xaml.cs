@@ -1,20 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
 using Windows.Storage;
 using Windows.UI.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Imaging;
-using Windows.UI.Xaml.Navigation;
 
 // https://go.microsoft.com/fwlink/?LinkId=234238 上介绍了“空白页”项模板
 
@@ -53,12 +42,21 @@ namespace 酷安_UWP
                 localSettings.Values["login"] = "0";
             }
 
-            User user = await CoolApkSDK.GetUserProfileByName(localSettings.Values["name"].ToString());
-            if (user != null)
+            try
             {
-                dt.Text = user.feeds.ToString();
-                gz.Text = user.follow.ToString();
-                fs.Text = user.fans.ToString();
+                User user = await CoolApkSDK.GetUserProfileByName(localSettings.Values["name"].ToString());
+
+                if (user != null)
+                {
+                    dt.Text = user.feeds.ToString();
+                    gz.Text = user.follow.ToString();
+                    fs.Text = user.fans.ToString();
+                }
+
+            }
+            catch (Exception)
+            {
+                localSettings.Values["name"] = "null";
             }
 
         }
