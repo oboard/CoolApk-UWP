@@ -12,65 +12,92 @@ namespace 酷安_UWP
     class CoolApkSDK
     {
 
-
         public static string GetToken()
         {
             //return await Web.GetHttp("http://l.w568w.ml/api/token.php")
 
             String DEVICE_ID = "8513efac-09ea-3709-b214-95b366f1a185";
-            string t = DateTime.Now.Millisecond.ToString();
-            string hex_t = ToHex(t, "utf-8", false);
+            long UnixDate =(DateTime.Now.ToUniversalTime().Ticks - 621355968000000000) / 10000000;
+            string t = UnixDate.ToString();
+            string hex_t = "0x" + Ten2Hex(t);
             // 时间戳加密
-            UTF8Encoding utf8 = new UTF8Encoding();
-            Byte[] encodedBytes = utf8.GetBytes(t);
-            String decodedString = utf8.GetString(encodedBytes);
-            string md5_t = GetMD5(decodedString);
+            string md5_t = GetMD5(t);
             // 不知道什么鬼字符串拼接
-            string a = "token://com.coolapk.market/c67ef5943784d09750dcfbb31020f0ab?{}${}&com.coolapk.market";
-            a = String.Format(a, md5_t, DEVICE_ID);
+            string a = "token://com.coolapk.market/c67ef5943784d09750dcfbb31020f0ab?" + md5_t + "$" + DEVICE_ID + "&com.coolapk.market";
             // 不知道什么鬼字符串拼接 后的字符串再次加密
-
-            encodedBytes = utf8.GetBytes(a);
-            decodedString = utf8.GetString(encodedBytes);
-            string md5_a = GetMD5(Convert.ToBase64String(Encoding.Default.GetBytes((decodedString))));
-            string token = String.Format(@"{}{}{}", md5_a, DEVICE_ID, hex_t);
+            //md5_a = hashlib.md5(base64.b64encode(a.encode('utf-8'))).hexdigest()
+            string md5_a = GetMD5(Convert.ToBase64String(Encoding.UTF8.GetBytes(a)));
+            string token = md5_a + DEVICE_ID + hex_t;
 
             // ==================================================
-            return token;
+            return token;//String.Format(" t:" + t + "\n" + " hex_t:" + hex_t + "\n" + " md5_t:" + md5_t + "\n" + " a:" + a + "\n" + " md5_a:" + md5_a + "\n" + " token:" + token);//"f4522d0e6a3b93f7430648bbf51756558513efac-09ea-3709-b214-95b366f1a1850x5d6106fc";
         }
 
-        public static string GetMD5(string myString)
+        public static string GetMD5(string inputString)
         {
-            MD5 md5 = new MD5CryptoServiceProvider();
-            byte[] fromData = System.Text.Encoding.Unicode.GetBytes(myString);
-            byte[] targetData = md5.ComputeHash(fromData);
-            string byte2String = null;
-            for (int i = 0; i < targetData.Length; i++)
+
+            MD5CryptoServiceProvider md5 = new MD5CryptoServiceProvider();
+            byte[] encryptedBytes = md5.ComputeHash(Encoding.UTF8.GetBytes(inputString));
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i < encryptedBytes.Length; i++)
             {
-                byte2String += targetData[i].ToString("x");
+                sb.AppendFormat("{0:x2}", encryptedBytes[i]);
             }
-            return byte2String;
+            return sb.ToString();
         }
 
-        public static string ToHex(string s, string charset, bool fenge)
+        public static string Ten2Hex(string ten)
         {
-            if ((s.Length % 2) != 0)
+
+
+            ulong tenValue = Convert.ToUInt64(ten);
+            ulong divValue, resValue;
+            string hex = "";
+            do
             {
-                s += " ";//空格
-                         //throw new ArgumentException("s is not valid chinese string!");
+                //divValue = (ulong)Math.Floor(tenValue / 16);
+
+                divValue = (ulong)Math.Floor((decimal)(tenValue / 16));
+
+                resValue = tenValue % 16;
+                hex = tenValue2Char(resValue) + hex;
+                tenValue = divValue;
             }
-            System.Text.Encoding chs = System.Text.Encoding.GetEncoding(charset);
-            byte[] bytes = chs.GetBytes(s);
-            string str = "";
-            for (int i = 0; i < bytes.Length; i++)
+            while (tenValue >= 16);
+            if (tenValue != 0)
+                hex = tenValue2Char(tenValue) + hex;
+            return hex;
+        }
+        public static string tenValue2Char(ulong ten)
+        {
+            switch (ten)
             {
-                str += string.Format("{0:X}", bytes[i]);
-                if (fenge && (i != bytes.Length - 1))
-                {
-                    str += string.Format("{0}", ",");
-                }
+                case 0:
+                case 1:
+                case 2:
+                case 3:
+                case 4:
+                case 5:
+                case 6:
+                case 7:
+                case 8:
+                case 9:
+                    return ten.ToString();
+                case 10:
+                    return "A";
+                case 11:
+                    return "B";
+                case 12:
+                    return "C";
+                case 13:
+                    return "D";
+                case 14:
+                    return "E";
+                case 15:
+                    return "F";
+                default:
+                    return "";
             }
-            return str.ToLower();
         }
 
 
@@ -117,10 +144,16 @@ namespace 酷安_UWP
         * @param uid User Id
         * @return
         */
-        public static async Task<User> GetUserProfileByUid(String uid)
+
+        public static async Task<string> GetUserProfileJsonByUid(String uid)
         {
             string json = await GetCoolApkMessage("https://api.coolapk.com/v6/user/profile?uid=" + uid);
-            return User.parseFrom(JsonObject.Parse(json));
+            return json;
+        }
+        public static async Task<User> GetUserProfileByUid(String uid)
+        {
+            JsonObject jobj = JsonObject.Parse(await GetUserProfileJsonByUid(uid));
+            return User.parseFrom(jobj);
         }
 
         /**
@@ -133,11 +166,14 @@ namespace 酷安_UWP
         {
             try
             {
-                String html = await Web.GetHttp("https://www.coolapk.com/n/" + name);
-                return await GetUserProfileByUid(GetBetween(html, "coolmarket://u/", "\">"));
+                String id = await Web.GetHttp("https://www.coolapk.com/n/" + name);
+                id = id.Split("coolmarket://www.coolapk.com/u/")[1];
+                id = id.Split(@"""")[0];
+                return await GetUserProfileByUid(id);
             }
-            catch (Exception)
+            catch (Exception e)
             {
+                System.Console.WriteLine(e);
                 return null;
             }
         }
@@ -187,8 +223,13 @@ namespace 酷安_UWP
         public int apkRatingNum;
         public int albumNum;
         public int discoveryNum;
+        public int level;
 
-        public User(String userName, int uid, String avatarUrl, String bio, String userGroupName, String groupName, String province, String city, String weibo, bool isDeveloper, int feeds, int fans, int follow, int apkFollowNum, int apkRatingNum, int albumNum, int discoveryNum) : base(userName, uid, avatarUrl)
+        public User(String userName, int uid, String avatarUrl, String bio,
+            String userGroupName, String groupName, String province,
+            String city, String weibo, bool isDeveloper, int feeds, 
+            int fans, int follow, int apkFollowNum, int apkRatingNum,
+            int albumNum, int discoveryNum,int level) : base(userName, uid, avatarUrl)
         {
             this.bio = bio;
             this.userGroupName = userGroupName;
@@ -204,6 +245,7 @@ namespace 酷安_UWP
             this.apkRatingNum = apkRatingNum;
             this.albumNum = albumNum;
             this.discoveryNum = discoveryNum;
+            this.level = level;
         }
 
         public static User parseFrom(JsonObject originData)
@@ -225,7 +267,8 @@ namespace 酷安_UWP
             (int)data.GetNamedNumber("apkFollowNum"),
             (int)data.GetNamedNumber("apkRatingNum"),
             (int)data.GetNamedNumber("albumNum"),
-            (int)data.GetNamedNumber("discoveryNum"));
+            (int)data.GetNamedNumber("discoveryNum"),
+            (int)data.GetNamedNumber("level"));
         }
     }
 

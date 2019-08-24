@@ -34,12 +34,13 @@ namespace 酷安_UWP
                 if (localSettings.Values["login"].ToString().Contains("1"))
                 {
                     User_Name.Text = localSettings.Values["name"].ToString();
-                    User_Face.Source = new BitmapImage(new Uri(localSettings.Values["face"].ToString(), UriKind.RelativeOrAbsolute));
+                    User_Face.ImageSource = new BitmapImage(new Uri(localSettings.Values["face"].ToString(), UriKind.RelativeOrAbsolute));
                 }
             }
             catch (Exception)
             {
                 localSettings.Values["login"] = "0";
+                levelGrid.Visibility = Visibility.Collapsed;
             }
 
             try
@@ -51,6 +52,8 @@ namespace 酷安_UWP
                     dt.Text = user.feeds.ToString();
                     gz.Text = user.follow.ToString();
                     fs.Text = user.fans.ToString();
+                    level.Text = "Lv." + user.level.ToString();
+                    levelGrid.Visibility = Visibility.Visible;
                 }
 
             }
@@ -67,6 +70,11 @@ namespace 酷安_UWP
             MainPage._ViewFrame.Navigate(typeof(LoginPage), new LoginPage());
             SystemNavigationManager.GetForCurrentView().AppViewBackButtonVisibility = AppViewBackButtonVisibility.Visible;
             MainPage._ViewFrame.Visibility = Visibility.Visible;
+        }
+
+        private void ListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
         }
     }
 }

@@ -67,15 +67,18 @@ namespace 酷安_UWP
             String[] imagearray = Regex.Split(images, "<img");
             for (int i = 0; i < imagearray.Length - 1; i++)
             {
-                String imageurl = imagearray[i + 1].Split('"')[1];
-                Image newImage = new Image
+                String imageUrl = imagearray[i + 1].Split('"')[1];
+                if (!imageUrl.Equals(""))
                 {
-                    Height = 100,
-                    //获得图片
-                    Source = new BitmapImage(new Uri(imageurl, UriKind.RelativeOrAbsolute))
-                };
-                //添加到缩略视图
-                ScreenShotView.Items.Add(newImage);
+                    Image newImage = new Image
+                    {
+                        Height = 100,
+                        //获得图片
+                        Source = new BitmapImage(new Uri(imageUrl, UriKind.RelativeOrAbsolute))
+                    };
+                    //添加到缩略视图
+                    ScreenShotView.Items.Add(newImage);
+                }
             }
             images = Regex.Split(Regex.Split(str, @"<div class=""carousel-inner"">")[1], @"<a class=""left carousel-control""")[0];
             imagearray = Regex.Split(images, "<img");

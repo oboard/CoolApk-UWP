@@ -77,10 +77,12 @@
         <!--顶栏-->
         <Grid Height="50" VerticalAlignment="Top"   Background="{ThemeResource SystemControlAltHighAcrylicElementBrush}">
 
-            <Button Click="BackButton_Click"    HorizontalAlignment="Left"  Width="50" Height="52"    Style="{StaticResource NavigationBackButtonNormalStyle}">
-                <SymbolIcon Symbol="Back" Foreground="Black"/>
+            <Button Click="BackButton_Click"    HorizontalAlignment="Left"
+                        Tag="3" Width="50" Height="52"
+                       BorderThickness="0" BorderBrush="Transparent" Background="Transparent" >
+                <SymbolIcon Symbol="Back"/>
             </Button>
-          
+
             <Button HorizontalAlignment="Right"   Width="50" Height="52"   Style="{StaticResource NavigationBackButtonNormalStyle}">
                 <SymbolIcon Symbol="More" Foreground="Black" RenderTransformOrigin="0.5,0.5">
                     <SymbolIcon.RenderTransform>

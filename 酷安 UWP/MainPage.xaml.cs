@@ -22,7 +22,7 @@ namespace 酷安_UWP
 
         public static Frame _ViewFrame, _ViewFrameS;
         public static TextBlock _User_Name;
-        public static Image _User_Face;
+        public static ImageBrush _User_Face;
         public static ColumnDefinition _dcd, _lcd;
 
         //App链接
@@ -73,7 +73,8 @@ namespace 酷安_UWP
                 view.ButtonInactiveForegroundColor = CoolForeInactiveColor;
 
                 //标题栏返回按钮事件注册
-                Windows.UI.Core.SystemNavigationManager.GetForCurrentView().BackRequested += App_BackRequested;
+                //Windows.UI.Core.SystemNavigationManager.GetForCurrentView().BackRequested += App_BackRequested;
+                //👆微软放弃返回按钮了！！！！！！！！！！！！！！！！！！！！！！！！
             }
             _ViewFrame = ViewFrame;
             _ViewFrameS = ViewFrameS;
@@ -90,7 +91,7 @@ namespace 酷安_UWP
         public static void User_Load()
         {
             _User_Name.Text = LoginPage.UserName;
-            _User_Face.Source = new BitmapImage(new Uri(LoginPage.UserFace, UriKind.RelativeOrAbsolute));
+            _User_Face.ImageSource = new BitmapImage(new Uri(LoginPage.UserFace, UriKind.RelativeOrAbsolute));
 
             //Save
             ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;

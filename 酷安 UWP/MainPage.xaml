@@ -41,7 +41,8 @@
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
                         <Setter Target="SpliteGrid.Visibility" Value="Collapsed"/>
-                        <Setter Target="ColumnDefinition1.Width" Value="Auto" />
+                        <Setter Target="ColumnDefinition1.Width" Value="*" />
+                        <Setter Target="ColumnDefinition2.Width" Value="0" />
 
                         <Setter Target="BottomBar.Visibility" Value="Visible"/>
                         <Setter Target="BottomBarShadow.Visibility" Value="Visible"/>
@@ -57,8 +58,9 @@
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
                         <Setter Target="SpliteGrid.Visibility" Value="Visible"/>
-                        <Setter Target="ColumnDefinition1.Width" Value="Auto" />
-
+                        <Setter Target="ColumnDefinition1.Width" Value="*" />
+                        <Setter Target="ColumnDefinition2.Width" Value="Auto" />
+                        
                         <Setter Target="BottomBar.Visibility" Value="Collapsed"/>
                         <Setter Target="BottomBarShadow.Visibility" Value="Collapsed"/>
 
@@ -76,6 +78,7 @@
                     <VisualState.Setters>
                         <Setter Target="SpliteGrid.Visibility" Value="Visible"/>
                         <Setter Target="ColumnDefinition1.Width" Value="400" />
+                        <Setter Target="ColumnDefinition2.Width" Value="*" />
 
                         <Setter Target="BottomBar.Visibility" Value="Collapsed"/>
                         <Setter Target="BottomBarShadow.Visibility" Value="Collapsed"/>
@@ -90,7 +93,7 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition  Width="Auto"/>
             <ColumnDefinition x:Name="ColumnDefinition1" Width="Auto"/>
-            <ColumnDefinition  Width="*"/>
+            <ColumnDefinition  x:Name="ColumnDefinition2" Width="*"/>
         </Grid.ColumnDefinitions>
 
 
@@ -109,24 +112,25 @@
             
             <StackPanel >
                 <Button x:Name="LeftButton1" 
-                        Tag="1" Width="50" Height="52" 
+                        Tag="1" Width="50" Height="50" 
                         Foreground="{StaticResource CoolApk_Theme_Fore}"   
-                        Style="{StaticResource NavigationBackButtonNormalStyle}"
+                       BorderThickness="0" BorderBrush="Transparent" Background="Transparent"
                         Click="Bar_Click"   >
-                    <FontIcon FontFamily="Segoe UI Symbol" Glyph="&#xE10F;"/>
+                    <SymbolIcon Symbol="Home"/>
                 </Button>
                 <Button x:Name="LeftButton2" 
-                        Tag="2" Width="50" Height="52" 
-                        Style="{StaticResource NavigationBackButtonNormalStyle}"
+                        Tag="2" Width="50" Height="50" 
+                       BorderThickness="0" BorderBrush="Transparent" Background="Transparent"
                         Click="Bar_Click"  >
                     <SymbolIcon Symbol="ContactPresence"/>
                 </Button>
                 <Button x:Name="LeftButton3" 
-                        Tag="3" Width="50" Height="52" 
-                        Style="{StaticResource NavigationBackButtonNormalStyle}"
+                        Tag="3" Width="50" Height="50"
+                       BorderThickness="0" BorderBrush="Transparent" Background="Transparent"
                          Click="Bar_Click"  >
                     <SymbolIcon Symbol="Contact"/>
                 </Button>
+
             </StackPanel>
         
             <control:ThemeButton HorizontalAlignment="Stretch" VerticalAlignment="Bottom" />
@@ -454,9 +458,9 @@
             <!--底栏-->
             <Grid x:Name="BottomBar" Background="{ThemeResource SystemControlAcrylicElementBrush}" VerticalAlignment="Bottom" Height="60">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="1*"/>
                     <ColumnDefinition x:Name="dcd" Width="0"/>
-                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="1*"/>
                 </Grid.ColumnDefinitions>
                 <AppBarButton x:Name="BottomBar1" Click="Bar_Click" Tag="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Icon = "Home" Label = "应用 · 游戏" Width="Auto" />
                 <AppBarButton x:Name="BottomBar2" Click="Bar_Click" Tag="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Icon = "ContactPresence" Label = "开发者" Grid.Column="1" Width="Auto" />
