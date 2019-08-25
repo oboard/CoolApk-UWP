@@ -3,7 +3,7 @@ using System.ComponentModel;
 
 namespace 酷安_UWP.Model
 {
-    class AppDate : INotifyPropertyChanged
+    class AppData : INotifyPropertyChanged
     {
         //缩略图
         private Uri thumbnail;
@@ -62,7 +62,7 @@ namespace 酷安_UWP.Model
 
 
 
-        public AppDate() { }
+        public AppData() { }
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -75,4 +75,5 @@ namespace 酷安_UWP.Model
             }
         }
     }
+
 }

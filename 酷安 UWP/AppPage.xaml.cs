@@ -5,21 +5,28 @@ using Windows.System;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media.Imaging;
+using Windows.UI.Xaml.Navigation;
 
 namespace 酷安_UWP
 {
     public sealed partial class AppPage : Page
     {
         String jstr = "", vmstr = "", dstr = "", vstr, mstr, nstr, iurl, vtstr, rstr, pstr, ddstr;
-
+        String applink = "";
         public AppPage()
         {
             this.InitializeComponent();
-
+        }
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            base.OnNavigatedTo(e);
+            //将传过来的数据 类型转换一下
+            applink = (string)e.Parameter;
         }
         private async void Page_Loaded(object sender, RoutedEventArgs e)
         {
-            this.Tag = MainPage.applink;
+            if (applink.Equals("")) return;
+            this.Tag = applink;
             LaunchAppViewLoad(await Web.GetHttp(Tag.ToString()));
         }
         private async void LaunchAppViewLoad(String str)
@@ -136,7 +143,7 @@ namespace 酷安_UWP
             try
             {
                 AppKNText.Text = knstr;
-                AppKImage.Source = new BitmapImage(new Uri(await CoolApkSDK.GetCoolApkUserFace(knstr), UriKind.RelativeOrAbsolute));
+                AppKImage.Source = new BitmapImage(new Uri(await CoolApkSDK.GetCoolApkUserFaceUri(knstr), UriKind.RelativeOrAbsolute));
             }
             catch (Exception)
             {
@@ -177,7 +184,7 @@ namespace 酷安_UWP
         private async void GotoUri_Click(object sender, RoutedEventArgs e)
         {
             // Launch the URI
-            var success = await Launcher.LaunchUriAsync(new Uri(MainPage.applink));
+            var success = await Launcher.LaunchUriAsync(new Uri(applink));
         }
 
         private void BackButton_Click(object sender, RoutedEventArgs e)

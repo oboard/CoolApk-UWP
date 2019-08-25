@@ -5,16 +5,15 @@
     xmlns:local="using:酷安_UWP"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:coolapk="using:酷安_UWP.CoolApk"
     mc:Ignorable="d"
-    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" Loaded="Page_Loaded">
 
-    <Grid>
-        <ListView>
-            <ListView.ItemContainerStyle>
-                <Style TargetType="ListViewItem">
-                    <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
-                </Style>
-            </ListView.ItemContainerStyle>
+
+    <Page.Resources>
+
+        <!--模板-->
+        <DataTemplate x:Key="FeedDataTemplate" >
             <ListViewItem Background="{x:Null}" Padding="10">
                 <Grid>
                     <Grid.RowDefinitions>
@@ -24,15 +23,19 @@
                     </Grid.RowDefinitions>
                     <Grid Grid.Row="0">
 
-                        <Ellipse Width="50" Height="50" HorizontalAlignment="Left" Fill="Black" />
+                        <Ellipse Width="50" Height="50" HorizontalAlignment="Left" >
+                            <Ellipse.Fill>
+                                <ImageBrush ImageSource="{Binding userAvatar}"/>
+                            </Ellipse.Fill>
+                        </Ellipse>
                         <Grid>
                             <Grid.RowDefinitions>
-                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="Auto"/>
                                 <RowDefinition Height="*"/>
                             </Grid.RowDefinitions>
 
-                            <TextBlock Margin="60,0,0,0" Grid.Row="0" Text="一块小板子" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-                            <TextBlock Margin="60,0,0,0" Grid.Row="1" Text="1分钟前 Windows10" HorizontalAlignment="Left" VerticalAlignment="Top" Foreground="Gray"/>
+                            <TextBlock Margin="60,0,0,0" Grid.Row="0" Text="{Binding username}" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                            <TextBlock Margin="60,0,0,0" Grid.Row="1" Text="{Binding device_title}" HorizontalAlignment="Left" VerticalAlignment="Top" Foreground="Gray"/>
                         </Grid>
                         <Button Background="{x:Null}" HorizontalAlignment="Right" VerticalAlignment="Top">
                             <SymbolIcon Symbol="More"/>
@@ -40,7 +43,36 @@
 
                     </Grid>
                     <Grid Grid.Row="1" Margin="10,10,0,0">
-                        <TextBlock Text="UWP版的酷安！！！" Margin="0,0,0,-1" Grid.RowSpan="2"/>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <TextBlock Grid.Row="0" Text="{Binding message}"/>
+                        <GridView Grid.Row="1" Margin="0,20,0,0" HorizontalAlignment="Center" ItemsSource="{Binding picArr}">
+                            <GridView.ItemTemplate>
+                                <DataTemplate x:DataType="x:String">
+                                    <Image MaxWidth="200" MinHeight="0" MinWidth="0" Source="{Binding}" Stretch="UniformToFill"/>
+                                </DataTemplate>
+                                <!--
+                                注意：
+                                一个模板里，binging 和 x:bind 不能同时使用
+                                binding默认oneway模式
+                                x:bind默认onetime模式
+                                ，Mode=TwoWay是双向模式
+
+                                微软推荐x:bind
+                                性能更高，而且支持方法转换
+
+                                {x:bind AAAA}
+                                {x:bind AAAA, Mode = OneWay}
+                                {x:bind method(AAAA), Mode = OneWay}
+
+
+                                public string method (string value）{
+                                }
+                                -->
+                            </GridView.ItemTemplate>
+                        </GridView>
                     </Grid>
                     <Grid Grid.Row="2" Margin="10,10,0,0">
                         <Grid.ColumnDefinitions>
@@ -48,41 +80,58 @@
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
-                        <Button Background="{x:Null}" Grid.Column="0">
+                        <Button Background="{x:Null}" Grid.Column="0" HorizontalAlignment="Center">
                             <Grid>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="*"/>
                                     <ColumnDefinition Width="*"/>
                                 </Grid.ColumnDefinitions>
                                 <SymbolIcon Symbol="Like" Grid.Column="0"/>
-                                <TextBlock Margin="10,0,0,0" Text="0" Grid.Column="1"/>
+                                <TextBlock Margin="10,0,0,0" Text="{Binding likenum}" Grid.Column="1"/>
                             </Grid>
                         </Button>
-                        <Button Background="{x:Null}" Grid.Column="1">
+                        <Button Background="{x:Null}" Grid.Column="1" HorizontalAlignment="Center">
                             <Grid>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="*"/>
                                     <ColumnDefinition Width="*"/>
                                 </Grid.ColumnDefinitions>
                                 <SymbolIcon Symbol="Comment" Grid.Column="0"/>
-                                <TextBlock Margin="10,0,0,0" Text="0" Grid.Column="1"/>
+                                <TextBlock Margin="10,0,0,0" Text="{Binding commentnum}" Grid.Column="1"/>
                             </Grid>
                         </Button>
-                        <Button Background="{x:Null}" Grid.Column="2">
+                        <Button Background="{x:Null}" Grid.Column="2" HorizontalAlignment="Center">
                             <Grid>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="*"/>
                                     <ColumnDefinition Width="*"/>
                                 </Grid.ColumnDefinitions>
                                 <SymbolIcon Symbol="Share" Grid.Column="0"/>
-                                <TextBlock Margin="10,0,0,0" Text="0" Grid.Column="1"/>
+                                <TextBlock Margin="10,0,0,0" Text="{Binding share_num}" Grid.Column="1"/>
                             </Grid>
                         </Button>
                     </Grid>
-
                 </Grid>
             </ListViewItem>
+        </DataTemplate>
+
+    </Page.Resources>
+
+
+    <Grid>
+        <ListView Name="listView" ItemTemplate="{StaticResource FeedDataTemplate}" Padding="0,50,0,0">
+            <ListView.ItemContainerStyle>
+                <Style TargetType="ListViewItem">
+                    <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                </Style>
+            </ListView.ItemContainerStyle>
 
         </ListView>
+        <Grid Height="50" VerticalAlignment="Top" Background="{ThemeResource SystemControlAcrylicElementBrush}">
+            <Button Click="BackButton_Click" HorizontalAlignment="Left" VerticalAlignment="Stretch" Width="50" Background="#00000000">
+                <SymbolIcon Symbol="Back" Foreground="{StaticResource CoolApk_Theme_Fore}"/>
+            </Button>
+            <TextBlock Margin="50,0,0,0" Text="动态" Foreground="{StaticResource CoolApk_Theme_Fore}" FontSize="20" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Center" />
+        </Grid>
     </Grid>
 </Page>

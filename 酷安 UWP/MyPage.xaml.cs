@@ -4,6 +4,7 @@ using Windows.UI.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media.Imaging;
+using 酷安_UWP.CoolApk;
 
 // https://go.microsoft.com/fwlink/?LinkId=234238 上介绍了“空白页”项模板
 
@@ -14,6 +15,7 @@ namespace 酷安_UWP
     /// </summary>
     public sealed partial class MyPage : Page
     {
+        User user;
         public MyPage()
         {
             this.InitializeComponent();
@@ -45,11 +47,11 @@ namespace 酷安_UWP
 
             try
             {
-                User user = await CoolApkSDK.GetUserProfileByName(localSettings.Values["name"].ToString());
+                user = await CoolApkSDK.GetUserProfileByName(localSettings.Values["name"].ToString());
 
                 if (user != null)
                 {
-                    dt.Text = user.feeds.ToString();
+                    dt.Text = user.feed.ToString();
                     gz.Text = user.follow.ToString();
                     fs.Text = user.fans.ToString();
                     level.Text = "Lv." + user.level.ToString();
@@ -67,7 +69,7 @@ namespace 酷安_UWP
         private void Login_Click(object sender, RoutedEventArgs e)
         {
             // OpenAppPage("https://www.coolapk.com/apk/" + ttt.Text);
-            MainPage._ViewFrame.Navigate(typeof(LoginPage), new LoginPage());
+            MainPage._ViewFrame.Navigate(typeof(LoginPage));
             SystemNavigationManager.GetForCurrentView().AppViewBackButtonVisibility = AppViewBackButtonVisibility.Visible;
             MainPage._ViewFrame.Visibility = Visibility.Visible;
         }
@@ -75,6 +77,13 @@ namespace 酷安_UWP
         private void ListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
 
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            if (user == null) return;
+            MainPage._ViewFrame.Navigate(typeof(FeedPage),user.uid);
+            MainPage._ViewFrame.Visibility = Visibility.Visible;
         }
     }
 }

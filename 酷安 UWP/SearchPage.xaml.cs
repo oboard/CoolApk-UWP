@@ -6,20 +6,27 @@ using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Imaging;
+using Windows.UI.Xaml.Navigation;
 
 namespace 酷安_UWP
 {
     public sealed partial class SearchPage : Page
     {
+        public string searchLink = "";
         public SearchPage()
         {
             this.InitializeComponent();
-
+        }
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            base.OnNavigatedTo(e);
+            //将传过来的数据 类型转换一下
+            searchLink = (string)e.Parameter;
         }
         private async void Page_Loaded(object sender, RoutedEventArgs e)
         {
-            this.Tag = MainPage.search;
-            await ToSearch(Tag.ToString());
+            if (searchLink.Equals("")) return;
+            await ToSearch(searchLink);
         }
 
         private async Task ToSearch(String str)

@@ -37,7 +37,7 @@
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
                 <Button Foreground="{StaticResource CoolApk_Theme_Fore}"   
-                       BorderThickness="0" BorderBrush="Transparent" Background="Transparent" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                       BorderThickness="0" BorderBrush="Transparent" Background="Transparent" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Click="Button_Click">
                     <Grid>
                         <TextBlock Name="dt" Text="0" Foreground="{StaticResource CoolApk_Theme_Fore}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,0,20"/>
                         <TextBlock Text="动态" Foreground="{StaticResource CoolApk_Theme_Fore}" Margin="0,20,0,0" VerticalAlignment="Center" HorizontalAlignment="Center"/>

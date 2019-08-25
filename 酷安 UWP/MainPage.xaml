@@ -20,7 +20,7 @@
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
-                <Image  Source="{Binding Thumbnail}" Stretch="Uniform"/>
+                <Image Source="{Binding Thumbnail}" Stretch="Uniform"/>
                 <TextBlock Text="{Binding Title}" Grid.Row="1" FontSize="14"  FontWeight="SemiBold" HorizontalAlignment="Center"/>
                 <TextBlock Text="{Binding Describe}" Grid.Row="2" FontSize="12" TextWrapping="Wrap" FontWeight="Medium" HorizontalAlignment="Center" Foreground="{ThemeResource SystemControlDisabledChromeDisabledLowBrush}"/>
             </Grid>
@@ -152,18 +152,6 @@
                         <PivotItem Header="应用" Margin="0" >
                             <ScrollViewer >
                                     <StackPanel >
-
-                                    <controls:AdaptiveGridView x:Name="updateview" DesiredWidth="120"
-                                                      IsItemClickEnabled="True"   ItemClick="updateview_ItemClick"
-                                                      HorizontalAlignment="Stretch" SelectionMode="None"
-                                                     Background="{ThemeResource SystemControlPageBackgroundAltMediumBrush}"
-                                                      ItemTemplate="{StaticResource GridViewDataTemplate}" >
-                                        <controls:AdaptiveGridView.Header>
-                                            <TextBlock Text="最近更新" Margin="12" HorizontalAlignment="Left" VerticalAlignment="Center"   Foreground="{ThemeResource SystemControlDisabledChromeDisabledLowBrush}" />
-                                            </controls:AdaptiveGridView.Header>
-                                        </controls:AdaptiveGridView>
-
-                                        <Border Height="14" />
 
                                     <controls:AdaptiveGridView x:Name="hotview"  DesiredWidth="120"
                                                       IsItemClickEnabled="True"   ItemClick="updateview_ItemClick"

@@ -18,15 +18,13 @@ namespace 酷安_UWP
 {
     public sealed partial class MainPage : Page
     {
-        int itemw = 110, itemh = 90;
-
         public static Frame _ViewFrame, _ViewFrameS;
         public static TextBlock _User_Name;
         public static ImageBrush _User_Face;
         public static ColumnDefinition _dcd, _lcd;
 
         //App链接
-        public static String applink = "", search = "";
+        public static string searchLink = "";
 
         Color CoolColor = ((SolidColorBrush)Application.Current.Resources["CoolApk_Theme"]).Color;
         Color CoolForeColor = ((SolidColorBrush)Application.Current.Resources["CoolApk_Theme_Fore"]).Color;
@@ -120,16 +118,20 @@ namespace 酷安_UWP
 
         public static void App_Back()
         {
-            if (_ViewFrame.Visibility == Visibility.Visible)
+            if (_ViewFrame.CanGoBack)
             {
-                _ViewFrame.Visibility = Visibility.Collapsed;
+                _ViewFrame.GoBack();
             }
-            else
-            {
-                _ViewFrameS.Visibility = Visibility.Collapsed;
-            }
+            //if (_ViewFrame.Visibility == Visibility.Visible)
+            //{
+            //    _ViewFrame.Visibility = Visibility.Collapsed;
+            //}
+            //else
+            //{
+            //    _ViewFrameS.Visibility = Visibility.Collapsed;
+            //}
 
-            if (_ViewFrame.Visibility == Visibility.Collapsed && _ViewFrameS.Visibility == Visibility.Collapsed) SystemNavigationManager.GetForCurrentView().AppViewBackButtonVisibility = AppViewBackButtonVisibility.Collapsed;
+            //if (_ViewFrame.Visibility == Visibility.Collapsed && _ViewFrameS.Visibility == Visibility.Collapsed) SystemNavigationManager.GetForCurrentView().AppViewBackButtonVisibility = AppViewBackButtonVisibility.Collapsed;
         }
         private void App_Back(object sender, RoutedEventArgs e)
         {
@@ -137,49 +139,22 @@ namespace 酷安_UWP
         }
 
         #endregion
-
-
-
         #region Task：任务
-
-
-        private void LoadNewUpdate(String str)
-        {
-            //绑定一个列表
-            ObservableCollection<AppDate> updateCollection = new ObservableCollection<AppDate>();
-            updateview.ItemsSource = updateCollection;
-
-
-            //循环添加AppDate
-            String body = str.Substring(str.IndexOf("<!--最近更新应用-->"), str.IndexOf("<!--应用推荐-->") - str.IndexOf("<!--最近更新应用-->"));
-            body = Regex.Split(body, @"<div class=""applications"">")[1];
-            String[] bodys = Regex.Split(body, @"\n"); for (int i = 0; i < 12; i++)
-            {
-                AppDate date = new AppDate()
-                {
-                    Tag = bodys[i * 12 + 1].Split('"')[1],
-                    Thumbnail = new Uri(bodys[i * 12 + 4].Split('"')[1], UriKind.RelativeOrAbsolute),
-                    Title = bodys[i * 12 + 7].Split('>')[1].Split('<')[0],
-                    Describe = bodys[i * 12 + 8].Split('>')[1].Split('<')[0],
-                };
-                updateCollection.Add(date);
-            }
-        }
 
 
 
         private void LoadHotGame(String str)
         {
             //绑定一个列表
-            ObservableCollection<AppDate> gameCollection = new ObservableCollection<AppDate>();
+            ObservableCollection<AppData> gameCollection = new ObservableCollection<AppData>();
             gamelist.ItemsSource = gameCollection;
 
 
-            //循环添加AppDate
+            //循环添加AppData
             String bod = Regex.Split(str, @"<div class=""applications"">")[1];
             for (int i = 0; i < 4; i++)
             {
-                AppDate date = new AppDate()
+                AppData date = new AppData()
                 {
                     Tag = "/game/" + Regex.Split(bod, "game/")[i + 1].Split('"')[0],
                     Thumbnail = new Uri(Regex.Split(bod, "src=")[i + 1].Split('"')[1], UriKind.RelativeOrAbsolute),
@@ -190,12 +165,12 @@ namespace 酷安_UWP
             }
 
 
-            //循环添加AppDate
+            //循环添加AppData
             String body = Regex.Split(str, @"<div class=""game_left_three"">")[1];
             String[] bodys = Regex.Split(body, @"\n");
             for (int i = 0; i < 9; i++)
             {
-                AppDate date = new AppDate()
+                AppData date = new AppData()
                 {
                     Tag = bodys[i * 15 + 6].Split('"')[1].Split('/')[2],
                     Thumbnail = new Uri(bodys[i * 15 + 6 + 3].Split('"')[3], UriKind.RelativeOrAbsolute),
@@ -209,16 +184,16 @@ namespace 酷安_UWP
         private void LoadHotApp(String str)
         {
             //绑定一个列表
-            ObservableCollection<AppDate> hotCollection = new ObservableCollection<AppDate>();
+            ObservableCollection<AppData> hotCollection = new ObservableCollection<AppData>();
             hotview.ItemsSource = hotCollection;
 
 
-            //循环添加AppDate
+            //循环添加AppData
             String body = Regex.Split(str, @"<div class=""app_list_left"">")[1];
             String[] bodys = Regex.Split(body, @"\n");
             for (int i = 0; i < 20; i++)
             {
-                AppDate date = new AppDate()
+                AppData date = new AppData()
                 {
                     Tag = bodys[i * 15 + 5].Split('"')[1],
                     Thumbnail = new Uri(bodys[i * 15 + 5 + 3].Split('"')[3], UriKind.RelativeOrAbsolute),
@@ -234,16 +209,16 @@ namespace 酷安_UWP
         private void LoadDeveloperApp(String str)
         {
             //绑定一个列表
-            ObservableCollection<AppDate> developerCollection = new ObservableCollection<AppDate>();
+            ObservableCollection<AppData> developerCollection = new ObservableCollection<AppData>();
             developerview.ItemsSource = developerCollection;
 
 
-            //循环添加AppDate
+            //循环添加AppData
             String body = Regex.Split(str, @"<div class=""left_nav"">")[1];
             String[] bodys = Regex.Split(body, @"\n");
             for (int i = 0; i < 20; i++)
             {
-                AppDate date = new AppDate()
+                AppData date = new AppData()
                 {
                     Tag = bodys[i * 15 + 4].Split('"')[1],
                     Thumbnail = new Uri(bodys[i * 15 + 4 + 3].Split('"')[3], UriKind.RelativeOrAbsolute),
@@ -257,19 +232,19 @@ namespace 酷安_UWP
         private void LoadDeveloper(String str, ListView list)
         {
             //绑定一个列表
-            ObservableCollection<AppDate> Collection = new ObservableCollection<AppDate>();
+            ObservableCollection<AppData> Collection = new ObservableCollection<AppData>();
             list.ItemsSource = Collection;
 
             if (str.Equals("")) return;
 
-            //循环添加AppDate
+            //循环添加AppData
             String body = Regex.Split(str, "<tbody>")[1];
             body = Regex.Split(body, "</tbody>")[0];
             String[] bodys = Regex.Split(body, @"\n");
             String[] bodylist = Regex.Split(body, @"<tr id=""data-row--");
             for (int i = 0; i < bodylist.Length - 1; i++)
             {
-                AppDate date = new AppDate()
+                AppData date = new AppData()
                 {
                     Tag = bodys[i * 33 + 3 + 2].Split('"')[1],
                     Thumbnail = new Uri(bodys[i * 33 + 3 + 2].Split('"')[7], UriKind.RelativeOrAbsolute),
@@ -293,28 +268,23 @@ namespace 酷安_UWP
 
         private void updateview_ItemClick(object sender, ItemClickEventArgs e)
         {
-            AppDate date = e.ClickedItem as AppDate;
+            AppData date = e.ClickedItem as AppData;
 
             if (date != null) OpenAppPage("https://www.coolapk.com" + date.Tag);
         }
 
         private void Gamelist_ItemClick(object sender, ItemClickEventArgs e)
         {
-            AppDate date = e.ClickedItem as AppDate;
+            AppData date = e.ClickedItem as AppData;
 
             if (date != null) OpenAppPage("https://www.coolapk.com/apk/" + date.Tag);
         }
 
-
-
-
-
         private void SearchButton_Click(object sender, RoutedEventArgs e)
         {
-            SearchPage newPage = new SearchPage();
-            ViewFrameS.Navigate(typeof(SearchPage), newPage);
+            ViewFrame.Navigate(typeof(SearchPage), searchLink);
             SystemNavigationManager.GetForCurrentView().AppViewBackButtonVisibility = AppViewBackButtonVisibility.Visible;
-            ViewFrameS.Visibility = Visibility.Visible;
+            ViewFrame.Visibility = Visibility.Visible;
         }
 
 
@@ -354,7 +324,7 @@ namespace 酷安_UWP
                 case "3":
                     LeftButton3.Foreground = new SolidColorBrush(CoolColor);
                     BottomBar3.Foreground = new SolidColorBrush(CoolColor);
-                    _ViewFrameS.Navigate(typeof(MyPage), new MyPage());
+                    _ViewFrameS.Navigate(typeof(MyPage));
                     _ViewFrameS.Visibility = Visibility.Visible;
                     break;
             }
@@ -367,19 +337,12 @@ namespace 酷安_UWP
 
         private void Classify_Click(object sender, RoutedEventArgs e)
         {
-            search = ((Button)sender).Content.ToString();
+            searchLink = ((Button)sender).Content.ToString();
             SearchButton_Click(null, null);
         }
-
-
-
-
-
         public static void OpenAppPage(String link)
         {
-            AppPage newPage = new AppPage();
-            applink = link;
-            _ViewFrame.Navigate(typeof(AppPage), newPage);
+            _ViewFrame.Navigate(typeof(AppPage), link);
             SystemNavigationManager.GetForCurrentView().AppViewBackButtonVisibility = AppViewBackButtonVisibility.Visible;
             _ViewFrame.Visibility = Visibility.Visible;
         }

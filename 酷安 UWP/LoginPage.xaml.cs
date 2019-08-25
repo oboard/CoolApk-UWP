@@ -13,11 +13,6 @@ namespace 酷安_UWP
         public LoginPage()
         {
             this.InitializeComponent();
-
-        }
-        private void Page_Loaded(object sender, RoutedEventArgs e)
-        {
-            this.Tag = MainPage.applink;
         }
 
         public String ReplaceHtml(String str)
