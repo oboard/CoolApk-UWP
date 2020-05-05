@@ -1,11 +1,14 @@
 ﻿using System;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
+using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
+using CoolapkUWP.Data;
+using System.Threading.Tasks;
 
-namespace 酷安_UWP
+namespace CoolapkUWP
 {
     /// <summary>
     /// 提供特定于应用程序的行为，以补充默认的应用程序类。
@@ -29,38 +32,24 @@ namespace 酷安_UWP
         /// <param name="e">有关启动请求和过程的详细信息。</param>
         protected override void OnLaunched(LaunchActivatedEventArgs e)
         {
-            Frame rootFrame = Window.Current.Content as Frame;
+            RegisterExceptionHandlingSynchronizationContext();
+            this.UnhandledException += Application_UnhandledException;
 
-            // 不要在窗口已包含内容时重复应用程序初始化，
-            // 只需确保窗口处于活动状态
+            Frame rootFrame = Window.Current.Content as Frame;
             if (rootFrame == null)
             {
-                // 创建要充当导航上下文的框架，并导航到第一页
                 rootFrame = new Frame();
-
                 rootFrame.NavigationFailed += OnNavigationFailed;
-
-                if (e.PreviousExecutionState == ApplicationExecutionState.Terminated)
-                {
-                    //TODO: 从之前挂起的应用程序加载状态
-                }
-
-                // 将框架放在当前窗口中
+                // 当导航堆栈尚未还原时，导航到第一页，
+                // 并通过将所需信息作为导航参数传入来配置
+                // 参数
+                rootFrame.Navigate(typeof(Pages.MainPage), e.Arguments);
                 Window.Current.Content = rootFrame;
             }
 
-            if (e.PrelaunchActivated == false)
-            {
-                if (rootFrame.Content == null)
-                {
-                    // 当导航堆栈尚未还原时，导航到第一页，
-                    // 并通过将所需信息作为导航参数传入来配置
-                    // 参数
-                    rootFrame.Navigate(typeof(MainPage), e.Arguments);
-                }
-                // 确保当前窗口处于活动状态
-                Window.Current.Activate();
-            }
+            // 确保当前窗口处于活动状态
+            Window.Current.Activate();
+
         }
 
         /// <summary>
@@ -71,6 +60,19 @@ namespace 酷安_UWP
         void OnNavigationFailed(object sender, NavigationFailedEventArgs e)
         {
             throw new Exception("Failed to load Page " + e.SourcePageType.FullName);
+        }
+
+        private async void Application_UnhandledException(object sender, Windows.UI.Xaml.UnhandledExceptionEventArgs e)
+        {
+            e.Handled = true;
+            if (!(e.Exception is TaskCanceledException) && !(e.Exception is OperationCanceledException))
+            {
+                if (Window.Current.Content != null)
+                {
+                    await new MessageDialog($"{e.Exception.Message}\n{e.Exception.StackTrace}").ShowAsync();
+                    Tools.HideProgressBar();
+                }
+            }
         }
 
         /// <summary>
@@ -85,6 +87,22 @@ namespace 酷安_UWP
             var deferral = e.SuspendingOperation.GetDeferral();
             //TODO: 保存应用程序状态并停止任何后台活动
             deferral.Complete();
+        }
+
+        private void RegisterExceptionHandlingSynchronizationContext()
+            => ExceptionHandlingSynchronizationContext.Register().UnhandledException += SynchronizationContext_UnhandledException;
+
+        private async void SynchronizationContext_UnhandledException(object sender, AysncUnhandledExceptionEventArgs e)
+        {
+            e.Handled = true;
+            if (!(e.Exception is TaskCanceledException) && !(e.Exception is OperationCanceledException))
+            {
+                if (Window.Current.Content != null)
+                {
+                    await new MessageDialog($"{e.Exception.Message}\n{e.Exception.StackTrace}").ShowAsync();
+                    Tools.HideProgressBar();
+                }
+            }
         }
     }
 }
